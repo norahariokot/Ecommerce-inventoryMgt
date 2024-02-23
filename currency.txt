@@ -1,0 +1,12 @@
+use python,
+read index.html file and parse it with beautifulsoup.
+
+find all a with class="_1k5if"
+
+for each a from the above list,
+try find b with class="_1oSQL" then symbol=b.text
+except symbol = ""
+try find p then name=p.text
+except name = ""
+
+open currency.json and write currency and name

@@ -1,0 +1,195 @@
+[
+  {
+    "imglink": "./dellxps_files/71Ir4cW5GNL._AC_UY218_.jpg",
+    "pdtname": "Dell XPS 13 9315/: 13.4\" FHD+, Intel 10-Core i7-1250U, 16GB LPDDR5 RAM, 512GB SSD, Thin & Light Business Laptop, Long Battery Life, Thunderbolt 4, IR Webcam, Backlit, Fingerprint, Wi-Fi 6E, Win 11 Home",
+    "price": "1,099.",
+    "category":"laptops",
+    "sub_category":""
+
+  },
+    
+  {
+    "imglink": "./dellxps_files/61d2qqdNq3L._AC_UY218_.jpg",
+    "pdtname": "Dell XPS 13 9310 / Laptop: 13.4-inch OLED 3.5K (3456x2160) Touchscreen Display, Intel Core i7-11195G7, 16GB LPDDR4x, 512GB SSD, Intel Iris Xe Graphics, 1-Year Premium Support, Windows 11 Home - Silver",
+    "price": "1,417.",
+    "category":"laptops",
+    "sub_category":""
+  },
+  
+ 
+  {
+    "imglink": "./dellxps_files/61sTOqy56-L._AC_UY218_.jpg",
+    "pdtname": "Dell XPS 15 9510 / Laptop: 13.4\" 4K OLED Touchscreen, Intel Core i7-1195G7, 16GB LPDDR4X RAM, 1TB SSD, Thin & Light Business Laptop, Backlit KB, Fingerprint Reader, Wi-Fi 6E, Thunderbolt 4, Webcam, Win 11 Home",
+    "price": "1,199.",
+    "category":"laptops",
+    "sub_category":""
+  },
+  {
+    "imglink": "./hpenvy_files/41BZdQruEzL._AC_UY218_.jpg",
+    "pdtname": "HP Envy x360 2-in-1 / Laptop: 15.6\" Full HD Touchscreen, AMD Ryzen 5 5500U Processor up to 4.6GHz, 8GB Memory, 256GB PCIe SSD, Backlit Keyboard, HDMI, Wi-Fi, Windows 11 Home, Nightfall Black",
+    "price": "1067",
+    "category":"laptops",
+    "sub_category":""
+    
+  },
+  
+    {
+    "imglink": "./hpenvy_files/61r5GLvYpFL._AC_UY218_.jpg",
+    "pdtname": "HP Envy 2023 / Laptop: 17.3\" FHD IPS Touchscreen, 13th Intel i7-1355U, NVIDIA Geforce RTX3050 Graphics, 64GB DDR4, 4TB NVMe SSD, WiFi 6E, HDMI 2xThunderbolt 4, Backlit Key Board, Windows 11 Pro w/RE USB",
+    "price": "2,229.",
+    "category":"laptops",
+    "sub_category":""
+  },
+  {
+    "imglink": "./hpspectre_files/612jTpoPWXL._AC_UY218_.jpg",
+    "pdtname": "HP Spectre 2021 2-in-1 /Laptop: 13.5\" Wide Ultra XGA+ Touch-Screen Laptop - Intel Evo Platform - Core i7-16GB Memory - 512GB SSD - Nightfall Black",
+    "price": "964.",
+    "category":"laptops",
+    "sub_category":""
+  },
+  
+    {
+    "imglink": "./hpspectre_files/718d8LDWoxL._AC_UY218_.jpg",
+    "pdtname": "HP Spectre x360 2-in-1 / Laptop: 16\" UHD 3K+ Touchscreen, Intel i7-12700H 14Cores, 16GB RAM, 2TB SSD, Wi-Fi 6e, Thunderbolt 4, Backlit KB, Fingerprint, Stylus Pen, Windows 11 Pro",
+    "price": "1,899.",
+    "category":"laptops",
+    "sub_category":""
+  },
+ 
+  {
+    "imglink": "./hpspectre_files/71ArRaM4zRL._AC_UY218_.jpg",
+    "pdtname": "HP Spectre 2022 Laptop 2-in-1 / Laptop: 16\" 3072 x 1920 Touchscreen, LED-Backlit | Intel Core i7-12700H 14-Core | 16GB LPDDR4 | 512GB SSD | Windows 11 Pro | Wi-Fi 6E - Backlit Keyboard - Nocturne Blue",
+    "price": "1,344",
+    "category":"laptops",
+    "sub_category":""
+  },
+  {
+    "imglink": "./macbook_files/61lsexTCOhL._AC_UY218_.jpg",
+    "pdtname": "Apple 2023 MacBook Pro / Laptop: M3 chip with 8‑core CPU, 10‑core GPU: 14.2-inch Liquid Retina XDR Display, 16GB Unified Memory, 512GB SSD Storage, Space Gray (Z1C80001D), AppleCare+ (3 Years)",
+    "price": "1,748.",
+    "category":"laptops",
+    "sub_category":""
+  },
+  
+  
+  {
+    "imglink": "./macbook_files/514SX-3rDfL._AC_UY218_.jpg",
+    "pdtname": "Apple 2020 MacBook Air / Laptop:  M1 Chip, 13” Retina Display, 8GB RAM, 256GB SSD Storage, Space Gray, with Microsoft 365 Family | 12-Month Subscription | PC/Mac Download",
+    "price": "819.",
+    "category":"laptops",
+    "sub_category":""
+  },
+  
+  {
+    "imglink": "./macbook_files/61JJlVirlnL._AC_UY218_.jpg",
+    "pdtname": "Apple 2023 MacBook Air / Laptop: with M2 chip: 15.3-inch Liquid Retina Display, 12-Core CPU and 30-Core GPU, 8GB Unified Memory, 256GB SSD Storage, Space Spray, AppleCare+ (3 Years)",
+    "price": "1,248.",
+    "category":"laptops",
+    "sub_category":""
+  },
+
+  {
+    "imglink": "./jbl_files/61HrC2qBTwL._AC_UY218_.jpg",
+    "pdtname": "JBL Live 660NC / Audio Headphone: Wireless Over-Ear Noise Cancelling Headphones, Long Lasting Battery - 8 hours, Voice Assistant - Black, Medium",
+    "price": "99.",
+    "category": "audio",
+    "sub_category":"Headphones"
+  },
+  {
+    "imglink": "./jbl_files/518X-lGLUsL._AC_UY218_.jpg",
+    "pdtname": "JBL Endurance Peak 3 / Audio Headphone: Wireless Headphones, Noise Cancellation, Purebass sound, Black, Small",
+    "price": "79.",
+    "category": "audio",
+    "sub_category":"Headphones"
+  },
+  {
+    "imglink": "./jbl_files/61cC3eF3uEL._AC_UY218_.jpg",
+    "pdtname": "JBL Tune 510BT / Audio Headphone: Wireless On-Ear Headphones,  Noise Cancelling, Portable Mini Bluetooth Speaker, IP67 Waterproof and dustproof, 10 Hours of Playtime, Purebass Sound, Black",
+    "price": "149",
+    "category": "audio",
+    "sub_category":"Headphones"
+  },
+  {
+    "imglink": "./sony_files/51rpbVmi9XL._AC_UY218_.jpg",
+    "pdtname": "Sony WH-CH720N Wirelesss Headphones/ : Noise Canceling, Wireless Headphones Bluetooth Headphones, Microphone for calls, Built-in Alexa, Black New Model",
+    "price": "150",
+    "category": "audio",
+    "sub_category":"Headphones"
+  },
+  {
+    "imglink": "./sony_files/61-3lx5wQQL._AC_UY218_.jpg",
+    "pdtname": "Sony WH-CH520W Bluetooth Headphones / : Up to 50 hours of battery life with fast charging, in-ear model, Wireless headphones, Limited Edition, Matte White",
+    "price": "101",
+    "category": "audio",
+    "sub_category":"Headphones"
+  },
+  
+  {
+    "imglink": "./sony_files/51SKmu2G9FL._AC_UY218_.jpg",
+    "pdtname": "Sony WH-1000XM4 Wireless Headphones/ : Premium Noise Canceling Headphones, Microphone for Hands-Free Phone Calls, Alexa Voice Control, Black",
+    "price": "228.",
+    "category": "audio",
+    "sub_category":"Headphones"
+  },
+
+  {
+    "imglink": "./appleheadphones_files/61Z5J-fq7KL._AC_UY218_.jpg",
+    "pdtname": "Apple AirPods (3rd Generation) /: Wireless Earbus with MagSafe Charging Case, Spatial Audio, Sweat and Water Resistant, Up to 30 Hours of Battery Life, Bluetooth Headphones for iPhone",
+    "price": "550",
+    "category": "audio",
+    "sub_category":"Headphones"
+  },
+  
+  {
+    "imglink": "./appleheadphones_files/417OJaY3DAL._AC_UY218_.jpg",
+    "pdtname": "Apple AirPods (2nd Generation)  / : Bluetooth Ear buds with Lightning Charging Case Included, Over 24 Hours of Battery Life, Up to 2X More Active Noise Cancelling, Effortless Setup for iPhone",
+    "price": "379",
+    "category": "audio",
+    "sub_category":"Headphones"
+  }, 
+
+  {
+    "imglink": "./keyboards_files/61V2O4vbYhL._AC_UY218_.jpg",
+    "pdtname": "Logitech G915 TKL Keyboard / : Tenkeyless Lightspeed Wireless Keyboard, Low Profile Switch Options, Lightsync RGB, Advanced Wireless, Sustainably recognised, Bluetooth Support, Black",
+    "price": "149",
+    "category": "accessories",
+    "sub_category":"Keyboards"
+  },
+  {
+    "imglink": "./keyboards_files/81qH7xXQJSL._AC_UY218_.jpg",
+    "pdtname": "Razer BlackWidow Keyboard / : Wireless Keyboard, Yellow Switches Linear & Silent, Chroma RGB , 6 Dedicated Macro Keys - Magnetic Wrist Rest, Doubleshot ABS Keycaps, Multi-Function Roller and Media Keys",
+    "price": "169.",
+    "category": "accessories",
+    "sub_category":"Keyboards"
+  },
+
+  {
+    "imglink": "./Laptop Stands_files/51KyaTB1EKL._AC_UY218_.jpg",
+    "pdtname": "Amazon Laptop Stand Riser/: Portable and Adjustable Stand, for Notebook up to 17 Inch, Silver",
+    "price": "28.",
+     "category": "accessories",
+    "sub_category":"laptop stand"
+  },
+
+  {
+    "imglink": "./bags_files/817Da7pNmfL._AC_UY218_.jpg",
+    "pdtname": "Lenovo Laptop Bag T210 /:  Messenger Shoulder Bag for Laptop or Tablet, Sleek, Durable & Water-Repellent Fabric",
+    "price": "15.",
+    "category": "accessories",
+    "sub_category":"Laptop bags"
+  },
+  
+  {
+    "imglink": "./bags_files/71ldQ61LiKL._AC_UY218_.jpg",
+    "pdtname": "Lenovo Laptop Backpack B210 /: 15.6-Inch Laptop/Tablet, Durable, Water-Repellent, Lightweight, Clean Design, Sleek for Travel, Business Casual or College, GX40Q17225, Black",
+    "price": "13.",
+    "category": "accessories",
+    "sub_category":"Laptop bags"
+  }
+
+
+  
+  
+  
+  
+]

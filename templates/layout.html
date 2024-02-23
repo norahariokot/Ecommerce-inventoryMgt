@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Afacad:wght@400;500;600;700&family=Lato:wght@300;400;700;900&family=Manrope:wght@300;400;500;600;700;800&family=Montserrat:wght@100;200;300;400;500;600;700;800;900&family=Open+Sans:wght@300;400;500;600;700;800&family=Raleway:wght@400;500;600;700;800&family=Roboto:wght@300;400;500;700;900&family=Source+Sans+3:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/CSS/style.css">
+    <link rel="stylesheet" href="../static/CSS/inventory.css">
+
+    <script>
+       //let categoryDict = JSON.parse('{{ json_category_dict | safe }}');
+       console.log('{{ json_productslist | safe }}');
+       let productList = JSON.parse('{{ json_productslist | safe }}')
+       console.log(productList)
+
+       
+    </script>
+    <script src="../static/JS/script.js"></script>
+</head>
+<body>
+    {% if current_route == "/" or current_route == "signed_in" %}
+    <header class="header nav-grid">
+        <img src="../static/Images/LOGO/LAPTOPS & EXTRA (3).png" alt="" class="logo">
+
+        <nav class="nav">
+            <ul class="nav-list">
+                <li class="nav-item"><a href="" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="" class="nav-link">Laptops</a></li>
+                <li class="nav-item"><a href="" class="nav-link">Audio</a></li>
+                <li class="nav-item"><a href="" class="nav-link">Accessories</a></li>
+            </ul>
+
+        </nav>
+
+        <div class="user">
+            <form>
+              <button class="user-icon"><i class="fa-regular fa-user "></i></button>
+            </form>
+            <form>
+                <button class="user-icon"><i class="fa-solid fa-cart-shopping "></i></button>
+              </form>
+        </div>
+
+    </header>
+    {% endif %}
+
+    <main>
+        {% block body%}{% endblock %}
+
+    </main>
+
+    {% if current_route == "/" or current_route == "signed_in" %}
+    <footer class="footer footer-grid">
+        <div class="footer-info">
+            <img src="../static/Images/LOGO/LAPTOPS___EXTRA__1_-removebg-preview.png" alt="" class="logo">
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nisi temporibus pariatur veniam amet id sapiente maiores, enim labore quia officia nam expedita quasi fugit, magnam itaque quaerat doloribus? Ducimus, saepe!</p>
+        </div>
+        <div class="footer-nav">
+            <ul>
+                <li class="nav-item"><a href="" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="" class="nav-link">Laptops</a></li>
+                <li class="nav-item"><a href="" class="nav-link">Audio</a></li>
+                <li class="nav-item"><a href="" class="nav-link">Accessories</a></li>
+            </ul>
+        </div>
+
+
+    </footer>
+    {% endif %}
+    
+</body>
+</html>

@@ -1,0 +1,137 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    {% if add_pdt %}
+        <main class="add-products"> 
+            <h2>Add Product</h2>
+                
+                <form action="/add_product" method="POST" class="addproduct-form">
+                    <label for="pdt_name">Product Name</label>
+                    <input type="text" name="pdt_name" id="pdt_name" class="addpdt-input">
+                    <label for="specs">Product specifications</label>
+                    <textarea name="specs" id="specs" cols="30" rows="8" class="addpdt-input"></textarea>
+                    <p><i class="fa-solid fa-circle-exclamation"></i> Specs should be comma separated</p>
+                    <label for="brand">Brand</label>
+                    <input type="text" name="brand" id="brand" class="addpdt-input">
+                    <div class="pdt-categories">
+                        <div class="grid-item-left">
+                            <label for="category" class="addpdt-lbl">Product Category</label>
+                            <!--<input type="text" name="category" id="category" class="addpdt-input">-->
+                            <select name="category" class="category" id="categoryForm1" onchange="updateSubcategories()">
+                                <option disabled selected>Category</option>
+                                {% for category in category_dict %}
+                                    <option value="{{ category }}" class="addpdt-input" >{{ category }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="grid-item-right">
+                            <label for="scategory" class="addpdt-lbl">Product Sub-category</label>
+                                <select name="scategory" id="subcategoryForm1" class="subcategory">
+                                    <option disabled selected>subcategory</option>
+                                        {% for category, subcategories in category_dict.items() %}
+                                            <option value="{{ subcategories }}" class="addpdt-input" >{{ subcategories}}</option>
+                                        {% endfor %}
+                                </select>
+                        
+                        </div>
+                                
+                    </div>
+
+                    <div class="pdt-px">
+                        <div class="grid-item-left">
+                            <label for="currency" class="addpdt-lbl">Currency</label>
+                            <select name="currency" id="currency" class="addpdt-input">
+                                <option disabled selected>Select currency </option>
+                                    {% for currency in currencies_list %}
+                                        <option value="{{ currency }}">{{ currency }}</option>
+                                    {% endfor %}
+                            </select>
+                        
+                        </div>
+
+                        <div class="grid-item-right">
+                            <label for="px" class="addpdt-lbl">Price</label>
+                        <input type="number" name="px" id="px" class="addpdt-input">
+                        </div>
+                    
+                    </div>
+                            
+                    <label for="img">Image</label>
+                    <input type="image" name="img" id="img" class="addpdt-input">
+                    
+                    <button type="submit">Submit</button>
+                
+                </form>
+
+        </main>
+
+    {% endif %}
+
+    {% if edit_pdt %}
+    <main class="edit-products"> 
+        <h2>Edit Product 2</h2>
+        
+        <form action="/update_product" method="POST" class="addproduct-form">
+            <input name="id" type="hidden" value = "{{ id }}">
+            <label for="pdt_name">Product Name</label>
+            <input type="text" name="pdt_name" id="pdt_name" class="addpdt-input" value = "{{ name }}">
+            <label for="specs">Product specifications</label>
+            <textarea name="specs" id="specs" cols="30" rows="8" class="addpdt-input" >{{ specs }}</textarea>
+            <p><i class="fa-solid fa-circle-exclamation"></i> Specs should be comma separated</p>
+            <label for="brand">Brand</label>
+            <input type="text" name="brand" id="brand" class="addpdt-input" value = "{{ brand }}">
+            <div class="pdt-categories">
+                <div class="grid-item-left">
+                    <label for="categoryForm2" class="addpdt-lbl">Product Category</label>
+                    <!--<input type="text" name="category" id="category" class="addpdt-input">-->
+                    <select name="category" class="category" id="categoryForm2" onchange="updateSubcategories2()">
+                        <option disabled selected>Category</option>
+                        {% for category in category_dict %}
+                            <option value="{{ category }}" class="addpdt-input" >{{ category }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="grid-item-right">
+                    <label for="subcategoryForm2" class="addpdt-lbl">Product Sub-category</label>
+                        <select name="scategory" id="subcategoryForm2" class="subcategory">
+                            <option disabled selected>subcategory</option>
+                                {% for category, subcategories in category_dict.items() %}
+                                    <option value="{{ subcategories }}" class="addpdt-input" >{{ subcategories}}</option>
+                                {% endfor %}
+                        </select>
+                
+                </div>
+                        
+            </div>
+            
+            <div class="pdt-px">
+                <div class="grid-item-left">
+                    <label for="currency" class="addpdt-lbl">Currency</label>
+                    <select name="currency" id="currency" class="addpdt-input">
+                        <option disabled selected>Select currency </option>
+                            {% for currency in currencies_list %}
+                                <option value="{{ currency }}">{{ currency }}</option>
+                            {% endfor %}
+                    </select>
+                
+                </div>
+    
+                <div class="grid-item-right">
+                    <label for="px" class="addpdt-lbl">Price</label>
+                <input type="number" name="price" id="px" class="addpdt-input" value = "{{ price }}">
+                </div>
+            
+            </div>
+                    
+            <label for="img">Image</label>
+            <input type="image" name="img" id="img" class="addpdt-input">
+            
+            <button type="submit">Submit</button>
+        
+        </form>
+    
+    </main>
+
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,120 @@
+CREATE TABLE products_list (
+   id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+   pdt_name TEXT NOT NULL,
+   specs TEXT,
+   brand TEXT,
+   category TEXT,
+   subcategory TEXT,
+   currency TEXT,
+   price INTEGER,   
+   image TEXT,
+   );
+
+   CREATE TABLE products_list (
+   id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+   pdt_name TEXT NOT NULL,
+   specs TEXT,
+   brand TEXT,
+   category TEXT,
+   subcategory TEXT,
+   currency TEXT,
+   price INTEGER,   
+   image TEXT
+   );
+
+   CREATE TABLE suppliers_list (
+   id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+   supplier_name TEXT NOT NULL,
+   supplier_email TEXT,
+   supplier_tel TEXT
+    );
+
+   CREATE TABLE supplier_product_categories ( 
+    supplier_id INTEGER, 
+    category_id INTEGER, 
+    FOREIGN KEY(supplier_id) REFERENCES suppliers_list(id), 
+    FOREIGN KEY(category_id) REFERENCES product_categories(id)
+    ); 
+
+CREATE TABLE product_categories (
+   id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+   pdt_category TEXT NOT NULL
+   );
+
+CREATE TABLE product_subcategories (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    pdt_subcategory TEXT NOT NULL
+);   
+
+CREATE TABLE product_categories_subcategories (
+    pdt_category_id INTEGER,
+    pdt_subcategory_id INTEGER,
+    FOREIGN KEY (pdt_category_id) REFERENCES product_categories(id),
+    FOREIGN KEY (pdt_subcategory_id) REFERENCES product_subcategories(id)
+);    
+
+
+
+
+selected.addEventListener('change', function() {
+            function sendFetchRequest(selected) {
+            fetch("/purchaseorder_info", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body:JSON.stringify({selected:selected}),
+            })
+        };
+
+        sendFetchRequest(selected.value)
+     
+        document.addEventListener('DOMContentLoaded', function () {
+            fetch('/get_info')
+                .then(response => response.json())
+                .then(data => {
+                    // Handle the received data (info_list) here
+
+                    console.log(data);
+                })
+                .catch(error => console.error('Error:', error));
+        });
+           
+});    
+
+
+
+CREATE TABLE currencies (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    symbol TEXT NOT NULL,
+    name TEXT NOT NULL
+);   
+
+function updateSubcategories2() {
+    const categorySelect2 = document.getElementById('categoryForm2');
+    const subcategorySelect2 = document.getElementById('subcategoryForm2');
+    subcategorySelect2.innerHTML = '<option value="" selected disabled>Select a subcategory</option>';
+    const selectedCategory2 = categorySelect2.value;
+    categoryDict[selectedCategory2].forEach(subcategory => {
+        const option2 = document.createElement('option');
+        option2.value = subcategory;
+        option2.text = subcategory;
+        subcategorySelect2.add(option2);
+    });
+}
+
+I converted this data to JSON using this code:
+[{'number': 1, 'item': 'Dell XPS 13 9315', 'specs': '13.4" FHD+, Intel 10-Core i7-1250U, 16GB LPDDR5 RAM, 512GB SSD, Thin & Light Business Laptop, Long Battery Life, Thunderbolt 4, IR Webcam, Backlit, Fingerprint, Wi-Fi 6E, Win 11 Home', 'price': 4189937},
+ {'number': 2, 'item': 'Dell XPS 13 9310 ', 'specs': '13.4-inch OLED 3.5K (3456x2160) Touchscreen Display, Intel Core i7-11195G7, 16GB LPDDR4x, 512GB SSD, Intel Iris Xe Graphics, 1-Year Premium Support, Windows 11 Home - Silver', 'price': 1417}, 
+ {'number': 3, 'item': 'Dell XPS 15 9510 ', 'specs': '13.4" 4K OLED Touchscreen, Intel Core i7-1195G7, 16GB LPDDR4X RAM, 1TB SSD, Thin & Light Business Laptop, Backlit KB, Fingerprint Reader, Wi-Fi 6E, Thunderbolt 4, Webcam, Win 11 Home', 'price': 1199}]
+
+
+SELECT supplier_name, GROUP_CONCAT(pdt_category)
+FROM suppliers_list 
+JOIN supplier_product_categories ON suppliers_list.id = supplier_product_categories.supplier_id 
+JOIN product_categories ON supplier_product_categories.category_id = product_categories.id GROUP BY supplier_name;
+
+My question is, for this first line of code:
+{% for category, items in categories|groupby('pdt_category') %}
+How does groupby unpack the dataset, since the dataset has 3 keys, how does it know which the categories and sub-categories are. Also what variables are category and items in that line of code
+

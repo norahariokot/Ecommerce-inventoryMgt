@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<main class="purchaseorder"> 
+    <h2>Create Purchase Order</h2>
+    <form action="/purchase_order" class="purchaseorder-form">
+        <div class="form-header">
+            <label for="PO_date">Date</label>
+            <input type="date" name="PO_date" id="PO_date" class="form-field">
+            <label for="PO_No">Purchase Order No.</label>
+            <input type="text" name="PO_No" id="PO_No" class="form-field">
+
+        </div>
+        <div class="form-details">
+            <div class="form-labels">
+                <label  class="form-label">item</label>
+                <label class="form-label form-specs">Specs</label>
+                <label  class="form-label form-qty">Quantity</label>
+                <label class="form-label form-currency">Currency</label>
+                <label class="form-label">Price</label>
+                <label class="form-label">Total</label>
+            </div>
+            <div class="form-inputs">
+                <select name="Item" class="form-input" id="PO_item">
+                    <option disabled selected>Product Name</option>
+                    {% for item_dict in items %}
+                        <option value="{{ item_dict['item'] }}">{{ item_dict['item'] }}</option>
+                    {% endfor %}
+                </select>
+                
+                <input type="text" name="PO_specs" id="PO_specs" class="form-input form-specs"  placeholder="specs">
+                <input type="number" name="PO_qty" id="PO_qty" class="form-input form-qty"  placeholder="">
+                <input type="text" name="PO_currency" id="PO_currency" class="form-input form-currency">
+                <input type="number" name="PO_px" id="PO_px" class="form-input">
+                <input type="number" name="PO_totalpx" id="PO_totalpx" class="form-input">
+            
+            </div>
+        
+        </div>
+        <button class="add-item-btn" onclick="add_item(event)"><i class="fa-solid fa-plus"></i> <span>Add Item</span></button>
+        <div class="form-total">
+            <label for="PO_grandtotal">Grand Total</label>
+            <input type="number" name="PO_grandtotal" id="PO_grandtotal" class="form-field">
+        </div>
+        
+        <button class="PO-submit-btn">SUBMIT</button>
+
+    </form>
+
+</main>
+{% endblock %}

@@ -1,0 +1,238 @@
+* {box-sizing: border-box;}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+
+}
+
+.products-table,
+.pdt-category-table,
+.suppliers-list-table {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 1rem;
+    border-collapse: collapse;
+    width: 100%;
+
+    & td, th {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    & tr:nth-child(even){
+        background-color: #f2f2f2;
+    }
+
+    & th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: #04AA6D;
+        color: white;
+    }
+    
+}
+
+.totals-table {
+    width: 50%;
+    border-collapse: collapse;
+    margin-left: 5em;
+
+    & td {
+        border: solid black;
+       
+     
+    }
+}
+
+/* Purchase Order Page */
+
+.purchaseorder{
+    width: 90%;
+    margin: 0 auto;
+}
+
+.purchaseorder-form {
+    width: 100%;
+    border: solid black;
+}
+
+.form-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border: solid green;
+    margin-bottom: 1em;
+
+    & .form-label,.form-field {
+        margin-top: .5em;
+        margin-bottom: 1em;
+    }
+}
+
+.form-details {
+    display: flex;
+    flex-direction: column;
+
+    
+}
+
+.form-labels,
+.form-inputs {
+     border: solid yellow;
+     display: flex;
+
+     
+}
+
+.form-label,
+.form-input {
+   
+    padding: .5em 1em;
+    border: solid green;
+    width: 20%;
+}
+
+.form-qty,
+.form-currency {
+    width: 10%;
+}
+
+.form-specs {
+    width: 30%;
+}
+
+
+.add-item-btn {
+    margin: 1em;
+    margin-left: 5em;
+    
+}
+
+.form-total {
+    text-align: right;
+    margin-right: 1em;
+
+    & label, input {
+        padding: 1em;
+    }
+  
+}
+
+.PO-submit-btn {
+    display: block;
+    width: 20%;
+    text-align: center;
+    margin:1em auto;
+}
+
+/* Add product form*/
+
+.add-products {
+    width: 90%;
+    margin: 0 auto;
+}
+.addproduct-form {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border: solid black;
+}
+
+.addpdt-input {
+    margin-bottom: 1em;
+    width: 60%;
+    padding: .5em;
+}
+
+.addpdt-lbl {
+    width: 60%;
+    /*border: solid red;*/
+}
+
+.pdt-categories,
+.pdt-px {
+    width: 60%;
+    display: grid;
+    grid-template-columns: minmax(100%, 1fr);
+    /*border: solid red;*/
+  
+}
+
+.grid-item-right,
+.grid-item-left {
+    grid-column: 1;
+    /*border: solid black;*/
+    display: flex;
+    flex-direction: column;
+
+    & label {
+        width: 100%;
+    }
+
+    & input {
+        width: 100%;
+    }
+    
+}
+
+/* Product categories*/
+.pdt-category-table {
+    border: solid green;
+}
+
+
+
+
+
+
+
+
+/* =================
+     Media Queries 
+    ================ */
+@media (min-width: 600px)   {
+/* Product page*/
+
+/* Add product form*/
+.pdt-categories,
+.pdt-px {
+    grid-template-columns: repeat(2,minmax(45%, 1fr));
+    grid-template-rows: auto;
+    column-gap: 1em;
+}
+
+.grid-item-right {
+    grid-column: 2;
+    /*border: solid black;*/
+    grid-row: 1;
+   
+    & input {
+        width: 100%;
+    }
+    
+}
+
+.grid-item-left{
+    grid-column: 1;
+    /*border: solid green;*/
+    grid-row: 1;
+    
+    & input {
+        width: 100%;
+    }
+    
+   
+   
+}
+
+
+
+
+    
+}  

@@ -1,0 +1,393 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<main class="admin-dashboard-grid">
+    <section class="admin-nav-section">
+        <img src="../static/Images/LOGO/LAPTOPS & EXTRA (3).png" alt="" class="admin-login-logo">
+        <h2> Dashboard</h2>
+        <p>Hullo</p>
+        <div class="admin-nav">
+            <form action="/purchases" >
+               <button class="btn-nav-item" type="submit">Purchase orders</button>
+            </form>
+
+            <form action="/suppliers" >
+                <button class="btn-nav-item" type="submit">Suppliers</button>
+             </form>
+            
+            
+            <button>Inventory</button>
+            <button>Sales Report</button>
+            <form action="/products">
+                <button class="btn-nav-item">Products List</button>
+            </form>
+            <form action="/add_product_category">
+                <button class="" type="submit">Product Categories</button>
+            </form>
+            
+        </div>
+
+    </section>
+
+    <!-- This section will contain the different admin management sections accessed via the navigation menu-->
+    <section class="admin-mgt-sections"> 
+        <h1>Iventory Management Dashboard </h1>
+
+       <img src="../static/Images/dellxps_files/" alt="">
+       
+       <!-- When producrs products btn is clicked-->
+       {% if product_names %}
+          <h2> Product listings </h2>
+          <form action="/add_product">
+            <button class="" type="submit">Add product</button>
+          </form>
+          
+            <table class=products-table>
+                <thead>
+                    <tr>
+                        {% for new_key in new_keys %}
+                            {% if loop.index > 1 %}
+                                <th>{{ new_key }} </th>
+                            {% endif %}
+                           
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products_list %}
+                        <tr>
+                            <td> {{ product.name }} </td>
+                            <td> {{ product.brand }} </td>
+                            <td> {{ product.category }} </td>
+                            <td> {{ product.subcategory }} </td>
+                            <td class="button-cell">
+                                <form action="/edit_product" method="post">
+                                    <input name="id" type="hidden" value = "{{ product.id }}">
+                                    <button type="submit" class="edit-button">Edit</button>
+                                </form>
+                            </td>
+                            <td class="button-cell">
+                                <form action="/delete_pdt" method="post">
+                                    <input name="id" type="hidden" value = "{{ product.id }}">
+                                    <button type="submit" class="delete-button">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <table class="totals-table">
+                <tr>
+                    <td>Total Products</td>
+                    <td> {{ products_total[0]["products_total"] }} </td>
+                </tr>
+
+            </table>
+        
+        {% endif %}
+
+        {% if product_categories %}
+        <h2>Add a product category </h2>
+        <form action="/add_product_category" method="POST" class="add-pdtcategory-form">
+        <input placeholder="Product Category" name="category" autofocus autocomplete="off" type="text">
+        <input placeholder="Sub-category " name="subcategory" autofocus autocomplete="off" type="text">
+        <button type="submit">Add category</button>
+        </form>
+
+        <section class="pdt-categories-section">
+            <h2>Product Categories</h2>
+        
+            <table class="pdt-category-table">
+                <thead>
+                    <tr>
+                        <th>Product Category</th>
+                        <th>Product subcategory</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for category, items in categories|groupby('pdt_category') %}
+                        {% for item in items %}
+                            <tr>
+                                {% if loop.first %}
+                                    <td rowspan="{{ items|length }}"> {{ category }}</td>
+                                {% endif %}
+                                <td> {{ item.pdt_subcategory }} </td>
+                                <td class="button-cell">
+                                    <form action="/edit_pdt_category" method="post">
+                                        <input name="id" type="hidden" value = "{{ item.id }}">
+                                        <button type="submit" class="edit-button">Edit</button>
+                                    </form>
+                                </td>
+                                <td class="button-cell">
+                                    <form action="/delete_pdt_category" method="post">
+                                        <input name="id" type="hidden" value = "{{ item.id }}">
+                                        <button type="submit" class="delete-button">Delete</button>
+                                    </form>
+                                </td>
+                                            
+                            </tr>
+                        {% endfor %}
+                    {% endfor %}
+                
+                </tbody>
+            </table>
+
+            <table class="totals-table">
+                <tr>
+                    <td>Total</td>
+                    <td>{{ total_categories[0]['category_total'] }} categories</td>
+                    <td>{{ total_subcategories[0]['subcategory_total'] }} subcategories</td>
+                                
+                </tr>
+            </table>
+        </section>
+        {% endif %}
+    
+        {% if edit_pdtcategory %}
+            <h2>Edit product category </h2>
+            <form action="/update_pdt_category" method="POST" class="add-pdtcategory-form">
+                <input name="id" type="hidden" value = "{{ category_id }}">
+                <input placeholder="Product Category" name="category" autofocus autocomplete="off" type="text" value="{{ category }}">
+                <input placeholder="Sub-category " name="subcategory" autofocus autocomplete="off" type="text" value="{{ subcategory }}">
+                <button type="submit">Edit category</button>
+            </form>
+        {% endif %}
+
+        <!-- Displays the purchase order form-->
+        {% if purchases %}
+                      
+            <h2> Purchase Orders</h2>
+
+            <div class="nav-buttons">
+                <form action="/purchase_order">
+                    <button>Create purchase order</button>
+            </form>  
+
+            <form action="">
+                <button>Purchase orders</button>
+            </form>
+            
+            </div>
+
+            <table class=products-table>
+                <thead>
+                    <tr>
+                        {% for new_key in new_keys %}
+                            <th>{{ new_key }} </th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products_list %}
+                        <tr>
+                            <td> {{ product.name }} </td>
+                            <td> {{ product.brand }} </td>
+                            <td> {{ product.category }} </td>
+                            <td> {{ product.subcategory }} </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+           
+        {% endif %}
+
+        {% if purchase_order %}   
+            <section class="purchase-order">
+                <h2>Create Purchase Order</h2>
+                <form action="/purchase_order" class="purchaseorder-form">
+                    <div class="form-header">
+                        <label for="PO_date">Date</label>
+                        <input type="date" name="PO_date" id="PO_date" class="form-field">
+                        <label for="PO_No">Purchase Order No.</label>
+                        <input type="text" name="PO_No" id="PO_No" class="form-field">
+                        <label for="PO_currency">Currency</label>
+                        <select name="PO_currency" id="category2" onchange="updateSubcategories()">
+                            <option disabled selected>Select currency</option>
+                            {% for currency in currencies_list %}
+                             <option value="{{ currency }}" class="addpdt-input" >{{ currency }}</option>   
+                            {% endfor %}                      
+                        </select>
+                    
+                    </div>
+
+                    <div class="form-details">
+                        <div class="form-labels">
+                            <label  class="form-label">item</label>
+                            <label class="form-label form-specs">Specs</label>
+                            <label  class="form-label form-qty">Quantity</label>
+                            <label class="form-label">Unit Price</label>
+                            <label class="form-label">Total</label>
+                        </div>
+                        <div class="form-inputs">
+                            <select name="Item" class="form-input" id="PO_item">
+                                <option disabled selected>Product Name</option>
+                                {% for dict_item in items %}
+                                    <option value="{{ dict_item['item'] }}" id="{{ dict_item['number'] }}">{{ dict_item['item'] }}</option>
+                                {% endfor %}
+                            </select>
+                            
+                            <input type="text" name="PO_specs" id="PO_specs" class="form-input form-specs"  placeholder="specs">
+                            <input type="number" name="PO_qty" id="PO_qty" class="form-input form-qty"  placeholder="">
+                            <input type="number" name="PO_px" id="PO_px" class="form-input">
+                            <input type="number" name="PO_totalpx" id="PO_totalpx" class="form-input">
+                        
+                        </div>
+                    
+                    </div>
+                    <button class="add-item-btn" onclick="add_item(event)"><i class="fa-solid fa-plus"></i> <span>Add Item</span></button>
+                    <div class="form-total">
+                        <label for="PO_grandtotal">Grand Total</label>
+                        <input type="number" name="PO_grandtotal" id="PO_grandtotal" class="form-field">
+                    </div>
+                    
+                    <button class="PO-submit-btn">SUBMIT</button>
+
+                </form>
+            </section>
+        {% endif %}   
+
+        <!-- View suppliers list when suppliers btn is clicked-->
+        {% if supplier_list %}
+            <section class=suppliers>
+                <h2> Suppliers List </h2>
+
+                <form action="/add_supplier" >
+                    <button class="btn-nav-item" type="submit">Add supplier </button>
+                 </form>
+                
+                 <table class="suppliers-list-table">
+                    <thead>
+                        <tr>
+                            <th>Supplier Name</th>
+                            <th>Products</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tbody>
+                            {% for supplier_dict in suppliername_categories %}
+                                {% for pdt in supplier_dict['pdt_categories'] %}
+                                <tr>
+                                    {% if loop.first %}
+                                        <td rowspan="{{ supplier_dict['pdt_categories']|length }}"> {{ supplier_dict['supplier_name'] }}</td>
+                                    {% endif %}                                  
+                                    <td> {{ pdt }} </td>
+
+                                    {% if loop.first %} 
+                                        <td class="button-cell" rowspan="{{ supplier_dict['pdt_categories']|length}}">
+                                                <form action="/edit_supplier" method="post">
+                                                    <input name="id" type="hidden" value="{{ supplier_dict.id }}">
+                                                    <button type="submit" class="edit-button">Edit</button>
+                                                </form>
+                                        </td>
+                                    {% endif %} 
+                                    
+                                    {% if loop.first %}
+                                        <td class="button-cell" rowspan="{{ supplier_dict['pdt_categories']|length}}">
+                                                <form action="/delete_supplier" method="post">
+                                                    <input name="id" type="hidden" value="{{ supplier_dict.id }}">
+                                                    <button type="submit" class="edit-button">Delete</button>
+                                                </form>
+                                        </td>
+                                    {% endif %} 
+                               
+                                </tr>
+
+                                {% endfor %}
+                            {% endfor%}
+
+                                
+                    </tbody>
+
+                 </table>
+
+                
+
+            </section>
+        {% endif %}
+
+        <!-- When add supplier btn clicked-->
+        {% if add_supplier_form %}
+            <section class=add-suppliers>
+                <h2> Add Supplier </h2>
+
+                <form action="/add_supplier" method="POST">
+                    <label for="supplier_name">Supplier Name</label>
+                    <input type="text" name="supplier_name" id="supplier_name" class="form-field"><br>
+                    <label for="supplier_contact">Contact Details</label><br>
+                    <label for="supplier_email">Email Address</label>
+                    <input type="email" name="supplier_email" id="supplier_email" class="form-field" >
+                    <label for="supplier_tel">Telephone Number</label>
+                    <input type="tel" name="supplier_tel" id="supplier_tel" class="form-field" ><br>
+                    <label for="supplier_name">Products supplied</label>
+                    <div class="supplier-categories">    
+                        <select name="supplier_pdt" id="supplier_pdt" class="addpdt-input">
+                            <option disabled selected>Select product category </option>
+                                {% for dict_item in supplier_product_category %}
+                                    <option value="{{ dict_item['pdt_category'] }}">{{ dict_item['pdt_category']  }}</option>
+                                {% endfor %}
+                        </select>
+                                       
+                    </div>
+                    <button onclick="addSupplierCategory()"> Add product category</button><br>
+                                        
+                    <button class="btn-nav-item" type="submit">Add supplier </button>
+                    
+
+                   
+                 </form>
+
+                
+
+            </section>
+        {% endif %}
+
+        <!-- Editing the supplier -->
+        {% if update_supplier %}
+            <section class=edit-suppliers>
+                <h2> Edit Supplier </h2>
+
+                <form action="/update_supplier" method="POST">
+                    <input name="supplier_id" type="hidden" value="{{ supplier_info[0]['id'] }}">
+                    <label for="supplier_name">Supplier Name</label>
+                    <input type="text" name="supplier_name" id="supplier_name" class="form-field" value="{{ supplier_info[0]['supplier_name'] }}"><br>
+                    <label for="supplier_contact">Contact Details</label><br>
+                    <label for="supplier_email">Email Address</label>
+                    <input type="email" name="supplier_email" id="supplier_email" class="form-field" placeholder="Email" value="{{ supplier_info[0]['supplier_email'] }}">
+                    <label for="supplier_tel">Telephone Number</label>
+                    <input type="tel" name="supplier_tel" id="supplier_tel" class="form-field" placeholder="Tel" value="{{ supplier_info[0]['supplier_tel'] }}"><br>
+                    <label for="supplier_name">Products supplied</label>
+                    <div class="supplier-categories">    
+                        <select name="supplier_pdt" id="supplier_pdt" class="addpdt-input">
+                            <option disabled selected>Select product category </option>
+                                {% for dict_item in supplier_pdt_category %}
+                                    <option value="{{ dict_item['pdt_category'] }}">{{ dict_item['pdt_category']  }}</option>
+                                {% endfor %}
+                        </select>
+                                       
+                    </div>
+                    <button onclick="addSupplierCategory()"> Add product category</button><br>
+                                        
+                    <button class="btn-nav-item" type="submit">Edit supplier </button>
+                    
+
+                   
+                 </form>
+
+                
+
+            </section>
+        {% endif %}    
+
+
+
+
+
+
+
+    
+    </section>
+
+</main>
+
+{% endblock %}
