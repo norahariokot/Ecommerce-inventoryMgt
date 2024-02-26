@@ -5,25 +5,27 @@
     <section class="admin-nav-section">
         <img src="../static/Images/LOGO/LAPTOPS & EXTRA (3).png" alt="" class="admin-login-logo">
         <h2> Dashboard</h2>
-        <p>Hullo</p>
+        
         <div class="admin-nav">
-            <form action="/purchases" >
-               <button class="btn-nav-item" type="submit">Purchase orders</button>
+            <form action="/add_product_category">
+                <button class="" type="submit">Product Categories</button>
+            </form>
+
+            <form action="/products">
+                <button class="btn-nav-item">Products List</button>
             </form>
 
             <form action="/suppliers" >
                 <button class="btn-nav-item" type="submit">Suppliers</button>
              </form>
-            
-            
+
+            <form action="/purchases" >
+               <button class="btn-nav-item" type="submit">Purchase orders</button>
+            </form>
+
             <button>Inventory</button>
             <button>Sales Report</button>
-            <form action="/products">
-                <button class="btn-nav-item">Products List</button>
-            </form>
-            <form action="/add_product_category">
-                <button class="" type="submit">Product Categories</button>
-            </form>
+                        
             
         </div>
 
@@ -89,11 +91,15 @@
 
         {% if product_categories %}
         <h2>Add a product category </h2>
-        <form action="/add_product_category" method="POST" class="add-pdtcategory-form">
-        <input placeholder="Product Category" name="category" autofocus autocomplete="off" type="text">
-        <input placeholder="Sub-category " name="subcategory" autofocus autocomplete="off" type="text">
-        <button type="submit">Add category</button>
+        <form action="/add_product_category" method="POST" class="add-pdtcategory-form" id="subcategoryForm">
+            <input placeholder="Product Category" name="category" autofocus autocomplete="off" type="text">
+            <div id="subcategoryContainer"> <!-- Container for dynamic subcategory inputs -->
+                <input class="subcategory-input" placeholder="Sub-category " name="subcategory" autofocus autocomplete="off" type="text">
+            </div>
+            <button id="addSubcategoryBtn" type="button">Add Sub-category</button>
+            <button id="submitBtn" type="submit">Add Product Category</button>
         </form>
+        
 
         <section class="pdt-categories-section">
             <h2>Product Categories</h2>

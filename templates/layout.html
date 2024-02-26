@@ -11,15 +11,17 @@
     <link rel="stylesheet" href="../static/CSS/style.css">
     <link rel="stylesheet" href="../static/CSS/inventory.css">
 
+    <script src="../static/JS/script.js" ></script> 
     <script>
-       //let categoryDict = JSON.parse('{{ json_category_dict | safe }}');
-       console.log('{{ json_productslist | safe }}');
-       let productList = JSON.parse('{{ json_productslist | safe }}')
-       console.log(productList)
+    /*let categoryDict = JSON.parse('{{ json_category_dict | safe }}');
+    console.log('{{ json_productslist | safe }}');
+    let productList = JSON.parse('{{ json_productslist | safe }}')
+    console.log(productList)*/
 
-       
-    </script>
-    <script src="../static/JS/script.js"></script>
+    </script>  
+
+    
+   
 </head>
 <body>
     {% if current_route == "/" or current_route == "signed_in" %}
@@ -71,6 +73,7 @@
 
     </footer>
     {% endif %}
-    
+
+
 </body>
 </html>

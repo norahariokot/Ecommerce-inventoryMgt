@@ -118,3 +118,29 @@ My question is, for this first line of code:
 {% for category, items in categories|groupby('pdt_category') %}
 How does groupby unpack the dataset, since the dataset has 3 keys, how does it know which the categories and sub-categories are. Also what variables are category and items in that line of code
 
+document.addEventListener("DOMContentLoaded", function() {
+    const addSubcategoryBtn = document.getElementById("addSubcategoryBtn");
+    const subcategoryContainer = document.getElementById("subcategoryForm"); // Change this to the appropriate container element
+  
+    addSubcategoryBtn.addEventListener("click", function(event) {
+      event.preventDefault(); // Prevent default form submission behavior
+  
+      const newInput = document.createElement("input");
+      newInput.setAttribute("placeholder", "Sub-category");
+      newInput.setAttribute("name", "subcategory");
+      newInput.setAttribute("type", "text");
+      newInput.classList.add("subcategory-input");
+      subcategoryContainer.appendChild(newInput);
+    });
+  });
+
+
+<script>
+    /*let categoryDict = JSON.parse('{{ json_category_dict | safe }}');
+    console.log('{{ json_productslist | safe }}');
+    let productList = JSON.parse('{{ json_productslist | safe }}')
+    console.log(productList)*/
+
+    
+ </script>  
+

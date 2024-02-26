@@ -1,5 +1,27 @@
-// Purchase order
-console.log(productList)
+// Product categories section
+// Function to add a new input field for subcategory when creating product categories
+document.addEventListener("DOMContentLoaded", function() {
+    const addSubcategoryBtn = document.getElementById("addSubcategoryBtn");
+    const subcategoryContainer = document.getElementById("subcategoryContainer");
+  
+    addSubcategoryBtn.addEventListener("click", function(event) {
+        event.preventDefault();
+
+        //console.log("Add subcategory")
+        const clonedInput = document.createElement("input");
+        clonedInput.setAttribute("class", "subcategory-input");
+        clonedInput.setAttribute("placeholder", "Sub-category");
+        clonedInput.setAttribute("name", "subcategory");
+        clonedInput.setAttribute("type", "text");
+        subcategoryContainer.appendChild(clonedInput);
+      });
+  
+   
+  });
+  
+   
+
+
 
 // Function to add form fields to the purchase order form, its triggered by add(row) btn and its children
     let formInputs = document.querySelector('.form-inputs');

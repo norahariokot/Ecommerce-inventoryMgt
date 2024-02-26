@@ -54,7 +54,84 @@ def admin_login():
 def admin_registration():
     return render_template("inventoryreg.html")
 
-######## Product listing page    ########
+
+#-----------------------------------------------------------#
+# ----------------------- PRODUCT CATEGORIES ---------------#
+#-----------------------------------------------------------#
+
+# Route to add product categories
+@app.route("/add_product_category", methods=["GET", "POST"])
+def add_product_category():
+    if request.method == "POST":
+        category = request.form.get("category")  
+        subcategory = request.form.get("subcategory") 
+
+        # Add categories to database in pdt_categories table
+        db.execute("INSERT INTO product_categories(pdt_category) VALUES (?)", category)
+        pdt_category_id = db.execute("SELECT last_insert_rowid() AS category_id")
+        pdtcategory_id = pdt_category_id[0]["category_id"]
+        print("Product category id is", pdtcategory_id)
+
+        # Add subcategories to database in pdt_subcategories table
+        db.execute("INSERT INTO product_subcategories(pdt_subcategory) VALUES (?)", subcategory)
+        pdt_subcategory_id = db.execute("SELECT last_insert_rowid() AS subcategory_id")
+        pdtsubcategory_id = pdt_subcategory_id[0]["subcategory_id"]
+        print("Product subcategory id is", pdtsubcategory_id)
+
+        # Add category_id and subcategory_id to product_categories_subcategories
+        db.execute("INSERT INTO product_categories_subcategories(pdt_category_id, pdt_subcategory_id) VALUES (?,?)", pdtcategory_id, pdtsubcategory_id)
+
+
+    categories = db.execute("SELECT * FROM product_categories")
+    print(categories)
+    total_categories = db.execute("SELECT COUNT(pdt_category) AS [category_total] FROM product_categories")
+    total_subcategories = db.execute("SELECT COUNT(pdt_subcategory) AS [subcategory_total] FROM product_subcategories")
+
+    product_categories = True
+   
+    return render_template("inventory.html", categories=categories, product_categories=product_categories, total_categories=total_categories, total_subcategories=total_subcategories)
+
+# Route to direct user to edit the product categories
+@app.route("/edit_pdt_category", methods=["GET","POST"]) 
+def edit_pdt_category():
+    id = request.form.get("id")
+    edit_pdtcategory = True
+
+    if id:
+        # Retrieve values for pdt categories for editing
+        categories = db.execute("SELECT * FROM product_categories WHERE id = ?", id)
+        category_id = categories[0]["id"]
+        category = categories[0]["pdt_category"]
+        subcategory = categories[0]["pdt_subcategory"]
+    return render_template("inventory.html", edit_pdtcategory= edit_pdtcategory, category_id=category_id, category=category, subcategory=subcategory)
+
+
+# Route to update product categories in the database
+@app.route("/update_pdt_category", methods=["POST"])
+def update_pdt_category():
+    id = request.form.get("id")
+
+    if id:
+        #Update category in database
+        category = request.form.get("category")
+        subcategory = request.form.get("subcategory")
+        db.execute("UPDATE product_categories SET pdt_category = ?, pdt_subcategory = ? WHERE id = ?", category, subcategory, id)
+    return redirect("/add_product_category")  
+
+
+# Route to delete the product categories
+@app.route("/delete_pdt_category", methods=["POST"]) 
+def delete_pdt_category():
+    id = request.form.get("id")
+    if id:
+        db.execute("DELETE FROM product_categories WHERE id = ?", id)
+    return redirect("/add_product_category")    
+        
+        
+#***********************************************************************************
+# *************************** PRODUCT lISTINGS *************************************
+#-----------------------------------------------------------------------------------
+
 # Route to display products that are in the data base
 @app.route("/products")  
 def products():
@@ -189,75 +266,7 @@ def delete_pdt():
         print("deleted")
     return redirect("/products")    
 
-    
-
-# Route to add product categories
-@app.route("/add_product_category", methods=["GET", "POST"])
-def add_product_category():
-    if request.method == "POST":
-        category = request.form.get("category")  
-        subcategory = request.form.get("subcategory")  
-        # Add categories to pdt_categories table
-        db.execute("INSERT INTO product_categories(pdt_category) VALUES (?)", category)
-        pdt_category_id = db.execute("SELECT last_insert_rowid() AS category_id")
-        pdtcategory_id = pdt_category_id[0]["category_id"]
-        print("Product category id is", pdtcategory_id)
-        # Add subcategories to pdt_subcategories table
-        db.execute("INSERT INTO product_subcategories(pdt_subcategory) VALUES (?)", subcategory)
-        pdt_subcategory_id = db.execute("SELECT last_insert_rowid() AS subcategory_id")
-        pdtsubcategory_id = pdt_subcategory_id[0]["subcategory_id"]
-        print("Product subcategory id is", pdtsubcategory_id)
-
-        # Add category_id and subcategory_id to product_categories_subcategories
-        db.execute("INSERT INTO product_categories_subcategories(pdt_category_id, pdt_subcategory_id) VALUES (?,?)", pdtcategory_id, pdtsubcategory_id)
-
-
-    categories = db.execute("SELECT * FROM product_categories")
-    print(categories)
-    total_categories = db.execute("SELECT COUNT(pdt_category) AS [category_total] FROM product_categories")
-    total_subcategories = db.execute("SELECT COUNT(pdt_subcategory) AS [subcategory_total] FROM product_subcategories")
-
-    product_categories = True
-   
-    return render_template("inventory.html", categories=categories, product_categories=product_categories, total_categories=total_categories, total_subcategories=total_subcategories)
-
-# Route to direct user to edit the product categories
-@app.route("/edit_pdt_category", methods=["GET","POST"]) 
-def edit_pdt_category():
-    id = request.form.get("id")
-    edit_pdtcategory = True
-
-    if id:
-        # Retrieve values for pdt categories for editing
-        categories = db.execute("SELECT * FROM product_categories WHERE id = ?", id)
-        category_id = categories[0]["id"]
-        category = categories[0]["pdt_category"]
-        subcategory = categories[0]["pdt_subcategory"]
-    return render_template("inventory.html", edit_pdtcategory= edit_pdtcategory, category_id=category_id, category=category, subcategory=subcategory)
-
-
-# Route to update product categories in the database
-@app.route("/update_pdt_category", methods=["POST"])
-def update_pdt_category():
-    id = request.form.get("id")
-
-    if id:
-        #Update category in database
-        category = request.form.get("category")
-        subcategory = request.form.get("subcategory")
-        db.execute("UPDATE product_categories SET pdt_category = ?, pdt_subcategory = ? WHERE id = ?", category, subcategory, id)
-    return redirect("/add_product_category")  
-
-
-# Route to delete the product categories
-@app.route("/delete_pdt_category", methods=["POST"]) 
-def delete_pdt_category():
-    id = request.form.get("id")
-    if id:
-        db.execute("DELETE FROM product_categories WHERE id = ?", id)
-    return redirect("/add_product_category")    
-        
-    
+ 
 
 @app.route("/purchases")    
 def purchases():
