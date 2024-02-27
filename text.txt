@@ -144,3 +144,12 @@ document.addEventListener("DOMContentLoaded", function() {
     
  </script>  
 
+// LEFT JOIN - A LEFT JOIN returns all the rows from the left table, and the matched rows from the right table. If there is no match, the result is NULL on the right side.
+SELECT pdt_category_id, pdt_category, pdt_subcategory_id, pdt_subcategory
+FROM product_categories
+LEFT JOIN product_categories_subcategories ON product_categories.id = product_categories_subcategories.pdt_category_id
+LEFT JOIN product_subcategories ON product_subcategories.id = product_categories_subcategories.pdt_subcategory_id;
+
+SELECT pdt_category_id, pdt_category, pdt_subcategory_id, pdt_subcategory FROM product_categories LEFT JOIN product_categories_subcategories ON product_categories.id = product_categories_subcategories.pdt_category_id LEFT JOIN product_subcategories ON product_subcategories.id = product_categories_subcategories.pdt_subcategory_id;
+
+

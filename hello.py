@@ -1,1 +1,3 @@
-print("Greetings")
+mylist = []
+
+print(len(mylist))

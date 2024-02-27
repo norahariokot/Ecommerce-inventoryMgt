@@ -64,7 +64,9 @@ def admin_registration():
 def add_product_category():
     if request.method == "POST":
         category = request.form.get("category")  
-        subcategory = request.form.get("subcategory") 
+        subcategories = [value for value in request.form.getlist("subcategory") if value]
+        print(subcategories)
+        print(len(subcategories))
 
         # Add categories to database in pdt_categories table
         db.execute("INSERT INTO product_categories(pdt_category) VALUES (?)", category)
@@ -73,23 +75,38 @@ def add_product_category():
         print("Product category id is", pdtcategory_id)
 
         # Add subcategories to database in pdt_subcategories table
-        db.execute("INSERT INTO product_subcategories(pdt_subcategory) VALUES (?)", subcategory)
-        pdt_subcategory_id = db.execute("SELECT last_insert_rowid() AS subcategory_id")
-        pdtsubcategory_id = pdt_subcategory_id[0]["subcategory_id"]
-        print("Product subcategory id is", pdtsubcategory_id)
+        subcategory_id_list = []
+        if len(subcategories) > 0:
+            print("Product has subcategories")
+            for subcategory in subcategories:
+                db.execute("INSERT INTO product_subcategories(pdt_subcategory) VALUES (?)", subcategory)
+                pdt_subcategory_id = db.execute("SELECT last_insert_rowid() AS subcategory_id")
+                pdtsubcategory_id = pdt_subcategory_id[0]["subcategory_id"]
+                print("Product subcategory id is", pdtsubcategory_id)
+                subcategory_id_list.append(pdtsubcategory_id)
+
+        print(subcategory_id_list)    
 
         # Add category_id and subcategory_id to product_categories_subcategories
-        db.execute("INSERT INTO product_categories_subcategories(pdt_category_id, pdt_subcategory_id) VALUES (?,?)", pdtcategory_id, pdtsubcategory_id)
+        if len(subcategory_id_list) == 0:
+            db.execute("INSERT INTO product_categories_subcategories(pdt_category_id) VALUES (?)", pdtcategory_id)
+        else:
+            for id in subcategory_id_list:
+                db.execute("INSERT INTO product_categories_subcategories(pdt_category_id,pdt_subcategory_id) VALUES (?,?)", pdtcategory_id, id)    
 
 
     categories = db.execute("SELECT * FROM product_categories")
+    subs= db.execute("SELECT * FROM product_subcategories")
     print(categories)
     total_categories = db.execute("SELECT COUNT(pdt_category) AS [category_total] FROM product_categories")
     total_subcategories = db.execute("SELECT COUNT(pdt_subcategory) AS [subcategory_total] FROM product_subcategories")
 
+    categories_and_subcategories = db.execute("SELECT pdt_category_id, pdt_category, pdt_subcategory_id, pdt_subcategory FROM product_categories LEFT JOIN product_categories_subcategories ON product_categories.id = product_categories_subcategories.pdt_category_id LEFT JOIN product_subcategories ON product_subcategories.id = product_categories_subcategories.pdt_subcategory_id;")
+    print(categories_and_subcategories)
+
     product_categories = True
    
-    return render_template("inventory.html", categories=categories, product_categories=product_categories, total_categories=total_categories, total_subcategories=total_subcategories)
+    return render_template("inventory.html", product_categories=product_categories, total_categories=total_categories, total_subcategories=total_subcategories)
 
 # Route to direct user to edit the product categories
 @app.route("/edit_pdt_category", methods=["GET","POST"]) 
