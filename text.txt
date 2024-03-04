@@ -144,6 +144,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
  </script>  
 
+When you use a standard JOIN (also known as an INNER JOIN), it only returns the rows where there is a match in both tables.
 // LEFT JOIN - A LEFT JOIN returns all the rows from the left table, and the matched rows from the right table. If there is no match, the result is NULL on the right side.
 SELECT pdt_category_id, pdt_category, pdt_subcategory_id, pdt_subcategory
 FROM product_categories
@@ -151,5 +152,23 @@ LEFT JOIN product_categories_subcategories ON product_categories.id = product_ca
 LEFT JOIN product_subcategories ON product_subcategories.id = product_categories_subcategories.pdt_subcategory_id;
 
 SELECT pdt_category_id, pdt_category, pdt_subcategory_id, pdt_subcategory FROM product_categories LEFT JOIN product_categories_subcategories ON product_categories.id = product_categories_subcategories.pdt_category_id LEFT JOIN product_subcategories ON product_subcategories.id = product_categories_subcategories.pdt_subcategory_id;
+
+ {% if loop.first %}
+                                <td class="button-cell" rowspan="{{ subcategory|length }}">
+                                    <form action="/edit_pdt_category" method="post">
+                                        <input name="id" type="hidden" value = "{{ item.id }}">
+                                        <button type="submit" class="edit-button">Edit</button>
+                                    </form>
+                                </td>
+                                {% endif %}
+
+                                {% if loop.first %}
+                                <td class="button-cell"rowspan="{{ subcategory|length }}" >
+                                    <form action="/delete_pdt_category" method="post">
+                                        <input name="id" type="hidden" value = "{{ item.id }}">
+                                        <button type="submit" class="delete-button">Delete</button>
+                                    </form>
+                                </td>
+                                {% endif %}
 
 

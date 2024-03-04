@@ -112,30 +112,41 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for category, items in categories|groupby('pdt_category') %}
-                        {% for item in items %}
+                    {% for category, subcategories in categories_and_subcategories|groupby("pdt_category") %}
+                        {% for subcategory in subcategories %}
                             <tr>
                                 {% if loop.first %}
-                                    <td rowspan="{{ items|length }}"> {{ category }}</td>
-                                {% endif %}
-                                <td> {{ item.pdt_subcategory }} </td>
-                                <td class="button-cell">
+                                    <td rowspan="{{ subcategories|length }}"> {{ category }}</td>
+                                {% endif %}  
+
+                                {% if subcategory.pdt_subcategory == None %}
+                                    <td></td> 
+
+                                {% else %}  
+                                    <td>{{ subcategory.pdt_subcategory}}</td> 
+                                {% endif %}  
+
+                                <td class="button-cell" >
                                     <form action="/edit_pdt_category" method="post">
-                                        <input name="id" type="hidden" value = "{{ item.id }}">
+                                        <input name="id" type="hidden" value = "{{ subcategory.pdt_category_id }}">
+                                        <input name="id" type="hidden" value = "{{ subcategory.pdt_subcategory_id }}">
                                         <button type="submit" class="edit-button">Edit</button>
                                     </form>
                                 </td>
-                                <td class="button-cell">
+
+                                <td class="button-cell" >
                                     <form action="/delete_pdt_category" method="post">
-                                        <input name="id" type="hidden" value = "{{ item.id }}">
+                                        <input name="id" type="hidden" value = "{{ subcategory.pdt_category_id }}">
+                                        <input name="id" type="hidden" value = "{{ subcategory.pdt_subcategory_id }}">
                                         <button type="submit" class="delete-button">Delete</button>
                                     </form>
                                 </td>
-                                            
+                               
                             </tr>
                         {% endfor %}
+
                     {% endfor %}
-                
+                        
                 </tbody>
             </table>
 

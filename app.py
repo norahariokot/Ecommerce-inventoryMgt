@@ -104,9 +104,22 @@ def add_product_category():
     categories_and_subcategories = db.execute("SELECT pdt_category_id, pdt_category, pdt_subcategory_id, pdt_subcategory FROM product_categories LEFT JOIN product_categories_subcategories ON product_categories.id = product_categories_subcategories.pdt_category_id LEFT JOIN product_subcategories ON product_subcategories.id = product_categories_subcategories.pdt_subcategory_id;")
     print(categories_and_subcategories)
 
+    categories_subcategories_dict ={}
+    for dict in categories_and_subcategories:
+        if dict["pdt_category"] in categories_subcategories_dict:
+            categories_subcategories_dict[dict["pdt_category"]].append(dict["pdt_subcategory"])
+        else:
+            categories_subcategories_dict[dict["pdt_category"]] =  [dict["pdt_subcategory"]]  
+            if categories_subcategories_dict[dict["pdt_category"]] == [None]:
+                categories_subcategories_dict[dict["pdt_category"]] = []
+            
+    print(categories_subcategories_dict)         
+
+
+
     product_categories = True
    
-    return render_template("inventory.html", product_categories=product_categories, total_categories=total_categories, total_subcategories=total_subcategories)
+    return render_template("inventory.html", product_categories=product_categories, categories_and_subcategories=categories_and_subcategories, total_categories=total_categories, total_subcategories=total_subcategories)
 
 # Route to direct user to edit the product categories
 @app.route("/edit_pdt_category", methods=["GET","POST"]) 
