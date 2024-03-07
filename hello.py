@@ -1,5 +1,2 @@
-new_dict = {'Laptops': [None], 'Audio': ['Headphones'], 'Accessories': ['Keyboards', 'Laptop stands', 'Laptop bags']}
+list = [{'pdt_category_id': 3, 'pdt_subcategory_id': 2}, {'pdt_category_id': 3, 'pdt_subcategory_id': 3}, {'pdt_category_id': 3, 'pdt_subcategory_id': 4}]
 
-for category, subcategories in new_dict.items():
-    
-    print(subcategories)

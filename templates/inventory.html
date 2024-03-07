@@ -93,10 +93,13 @@
         <h2>Add a product category </h2>
         <form action="/add_product_category" method="POST" class="add-pdtcategory-form" id="subcategoryForm">
             <input placeholder="Product Category" name="category" autofocus autocomplete="off" type="text">
-            <div id="subcategoryContainer"> <!-- Container for dynamic subcategory inputs -->
-                <input class="subcategory-input" placeholder="Sub-category " name="subcategory" autofocus autocomplete="off" type="text">
+            <div class="subcategory-div">
+                <div id="subcategoryContainer"> <!-- Container for dynamic subcategory inputs -->
+                    <input class="subcategory-input" placeholder="Sub-category " name="subcategory" autofocus autocomplete="off" type="text">
+                </div>
+                <button id="addSubcategoryBtn" type="button">Add Sub-category</button>
             </div>
-            <button id="addSubcategoryBtn" type="button">Add Sub-category</button>
+           
             <button id="submitBtn" type="submit">Add Product Category</button>
         </form>
         
@@ -128,16 +131,16 @@
 
                                 <td class="button-cell" >
                                     <form action="/edit_pdt_category" method="post">
-                                        <input name="id" type="hidden" value = "{{ subcategory.pdt_category_id }}">
-                                        <input name="id" type="hidden" value = "{{ subcategory.pdt_subcategory_id }}">
+                                        <input name="category_id" type="hidden" value = "{{ subcategory.pdt_category_id }}">
+                                        <input name="subcategory_id" type="hidden" value = "{{ subcategory.pdt_subcategory_id }}">
                                         <button type="submit" class="edit-button">Edit</button>
                                     </form>
                                 </td>
 
                                 <td class="button-cell" >
-                                    <form action="/delete_pdt_category" method="post">
-                                        <input name="id" type="hidden" value = "{{ subcategory.pdt_category_id }}">
-                                        <input name="id" type="hidden" value = "{{ subcategory.pdt_subcategory_id }}">
+                                    <form action="/delete_categories_subcategories" method="post">
+                                        <input name="category_id" type="hidden" value = "{{ subcategory.pdt_category_id }}">
+                                        <input name="subcategory_id" type="hidden" value = "{{ subcategory.pdt_subcategory_id }}">
                                         <button type="submit" class="delete-button">Delete</button>
                                     </form>
                                 </td>
@@ -164,10 +167,30 @@
         {% if edit_pdtcategory %}
             <h2>Edit product category </h2>
             <form action="/update_pdt_category" method="POST" class="add-pdtcategory-form">
-                <input name="id" type="hidden" value = "{{ category_id }}">
+                <input name="category_id" type="hidden" value = "{{ category_id }}">
                 <input placeholder="Product Category" name="category" autofocus autocomplete="off" type="text" value="{{ category }}">
+                <input name="subcategory_id" type="hidden" value = "{{ subcategory_id }}">
                 <input placeholder="Sub-category " name="subcategory" autofocus autocomplete="off" type="text" value="{{ subcategory }}">
-                <button type="submit">Edit category</button>
+                <button type="submit">Update category</button>
+            </form>
+        {% endif %}
+
+        {% if delete_categories_subcategories %}
+            <h2>Delete product category or product subcategory </h2>
+            <h3>Delte product category</h3>
+            <p>This option will delete the entire product category including its subcategories</p>
+            <form action="/delete_pdt_category" method="POST" class="add-pdtcategory-form">
+                <input name="category_id" type="hidden" value = "{{ pdtcategory_id }}">
+                <input placeholder="Product Category" name="category" autofocus autocomplete="off" type="text" value="{{ pdtcategory }}">
+                <button type="submit">Delete product category</button>
+            </form>
+
+            <h3>Delte product subcategory</h3>
+            <p>This option will only delete the subcategory</p>
+            <form action="/delete_pdt_subcategory" method="POST" class="add-pdtcategory-form">
+                <input name="subcategory_id" type="hidden" value = "{{ pdtsubcategory_id }}">
+                <input placeholder="Sub-category " name="subcategory" autofocus autocomplete="off" type="text" value="{{ pdtsubcategory }}">
+                <button type="submit">Delete subcategory</button>
             </form>
         {% endif %}
 

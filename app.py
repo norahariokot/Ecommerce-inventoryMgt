@@ -101,21 +101,19 @@ def add_product_category():
     total_categories = db.execute("SELECT COUNT(pdt_category) AS [category_total] FROM product_categories")
     total_subcategories = db.execute("SELECT COUNT(pdt_subcategory) AS [subcategory_total] FROM product_subcategories")
 
-    categories_and_subcategories = db.execute("SELECT pdt_category_id, pdt_category, pdt_subcategory_id, pdt_subcategory FROM product_categories LEFT JOIN product_categories_subcategories ON product_categories.id = product_categories_subcategories.pdt_category_id LEFT JOIN product_subcategories ON product_subcategories.id = product_categories_subcategories.pdt_subcategory_id;")
+    categories_and_subcategories = db.execute("SELECT pdt_category_id, pdt_category, pdt_subcategory_id, pdt_subcategory FROM product_categories LEFT JOIN product_categories_subcategories ON product_categories.id = product_categories_subcategories.pdt_category_id LEFT JOIN product_subcategories ON product_subcategories.id = product_categories_subcategories.pdt_subcategory_id")
     print(categories_and_subcategories)
 
-    categories_subcategories_dict ={}
-    for dict in categories_and_subcategories:
-        if dict["pdt_category"] in categories_subcategories_dict:
-            categories_subcategories_dict[dict["pdt_category"]].append(dict["pdt_subcategory"])
-        else:
-            categories_subcategories_dict[dict["pdt_category"]] =  [dict["pdt_subcategory"]]  
-            if categories_subcategories_dict[dict["pdt_category"]] == [None]:
-                categories_subcategories_dict[dict["pdt_category"]] = []
-            
-    print(categories_subcategories_dict)         
-
-
+    # This code is nolonger required
+    #categories_subcategories_dict ={}
+    #for dict in categories_and_subcategories:
+    #    if dict["pdt_category"] in categories_subcategories_dict:
+    #        categories_subcategories_dict[dict["pdt_category"]].append(dict["pdt_subcategory"])
+    #    else:
+    #        categories_subcategories_dict[dict["pdt_category"]] =  [dict["pdt_subcategory"]]  
+    #        if categories_subcategories_dict[dict["pdt_category"]] == [None]:
+    #            categories_subcategories_dict[dict["pdt_category"]] = []      
+    #print(categories_subcategories_dict)         
 
     product_categories = True
    
@@ -124,38 +122,102 @@ def add_product_category():
 # Route to direct user to edit the product categories
 @app.route("/edit_pdt_category", methods=["GET","POST"]) 
 def edit_pdt_category():
-    id = request.form.get("id")
+    pdt_categoryid = request.form.get("category_id")
+    print(pdt_categoryid)
+    pdt_subcategoryid = request.form.get("subcategory_id")
+    print(pdt_subcategoryid)
     edit_pdtcategory = True
 
-    if id:
-        # Retrieve values for pdt categories for editing
-        categories = db.execute("SELECT * FROM product_categories WHERE id = ?", id)
-        category_id = categories[0]["id"]
-        category = categories[0]["pdt_category"]
-        subcategory = categories[0]["pdt_subcategory"]
-    return render_template("inventory.html", edit_pdtcategory= edit_pdtcategory, category_id=category_id, category=category, subcategory=subcategory)
+    if pdt_categoryid:
+        # Retrieve values for pdt categories and their respective subcategories for editing
+        #categories = db.execute("SELECT * FROM product_categories WHERE id = ?", id)
+        pdtcategories_and_pdtsubcategories = db.execute("SELECT pdt_category_id, pdt_category, pdt_subcategory_id, pdt_subcategory FROM product_categories LEFT JOIN product_categories_subcategories ON product_categories.id = product_categories_subcategories.pdt_category_id LEFT JOIN product_subcategories ON product_subcategories.id = product_categories_subcategories.pdt_subcategory_id WHERE pdt_category_id=? AND pdt_subcategory_id =?",pdt_categoryid, pdt_subcategoryid)
+        category_id = pdtcategories_and_pdtsubcategories[0]["pdt_category_id"]
+        category = pdtcategories_and_pdtsubcategories[0]["pdt_category"]
+        subcategory_id = pdtcategories_and_pdtsubcategories[0]["pdt_subcategory_id"]
+        subcategory = pdtcategories_and_pdtsubcategories[0]["pdt_subcategory"]
+    return render_template("inventory.html", edit_pdtcategory= edit_pdtcategory, category_id=category_id, category=category, subcategory_id=subcategory_id,subcategory=subcategory)
 
 
 # Route to update product categories in the database
 @app.route("/update_pdt_category", methods=["POST"])
 def update_pdt_category():
-    id = request.form.get("id")
+    category_id = request.form.get("category_id")
+    subcategory_id = request.form.get("subcategory_id")
 
-    if id:
+    if category_id:
         #Update category in database
         category = request.form.get("category")
         subcategory = request.form.get("subcategory")
-        db.execute("UPDATE product_categories SET pdt_category = ?, pdt_subcategory = ? WHERE id = ?", category, subcategory, id)
+        db.execute("UPDATE product_categories SET pdt_category = ? WHERE id = ?", category, category_id)
+        db.execute("UPDATE product_subcategories SET pdt_subcategory = ? WHERE id = ?", subcategory, subcategory_id)
     return redirect("/add_product_category")  
 
 
-# Route to delete the product categories
-@app.route("/delete_pdt_category", methods=["POST"]) 
+# Route to direct user to delete options for product categories
+@app.route("/delete_categories_subcategories", methods=["POST"]) 
+def delete_categories_subcategories():
+    category_id = request.form.get("category_id")
+    subcategory_id = request.form.get("subcategory_id")
+
+    delete_categories_subcategories = True
+
+    categories_and_subcategories = db.execute("SELECT pdt_category_id, pdt_category, pdt_subcategory_id, pdt_subcategory FROM product_categories LEFT JOIN product_categories_subcategories ON product_categories.id = product_categories_subcategories.pdt_category_id LEFT JOIN product_subcategories ON product_subcategories.id = product_categories_subcategories.pdt_subcategory_id WHERE pdt_category_id=? AND pdt_subcategory_id =?", category_id, subcategory_id)
+    pdtcategory_id = categories_and_subcategories[0]["pdt_category_id"]
+    pdtcategory = categories_and_subcategories[0]["pdt_category"]
+    pdtsubcategory_id = categories_and_subcategories[0]["pdt_subcategory_id"]
+    pdtsubcategory = categories_and_subcategories[0]["pdt_subcategory"]
+
+    return render_template("inventory.html", delete_categories_subcategories=delete_categories_subcategories, pdtcategory_id=pdtcategory_id, pdtcategory=pdtcategory, pdtsubcategory_id=pdtsubcategory_id, pdtsubcategory=pdtsubcategory)    
+
+#Route to delete entire product category
+@app.route("/delete_pdt_category", methods=["POST"])  
 def delete_pdt_category():
-    id = request.form.get("id")
-    if id:
-        db.execute("DELETE FROM product_categories WHERE id = ?", id)
-    return redirect("/add_product_category")    
+    category_id =request.form.get("category_id")
+    print(f"Category id is {category_id}")
+
+    # To delete entire category and its corresponding subcategories:
+    # Step 1: Retrieve corresponding subcategories ids from the categories & subcategories tables
+    subcategories_ids = db.execute("SELECT * FROM product_categories_subcategories WHERE pdt_category_id = ?", category_id)
+    print(subcategories_ids)
+
+    #list to of subcategory ids
+    subcategory_ids_list = []
+    for dict_item in subcategories_ids:
+        subcategory_ids_list.append(dict_item["pdt_subcategory_id"])
+        print(subcategory_ids_list)    
+
+    # Step 2: Delete values  child table/s: # Pay attention to future child tables
+    db.execute("DELETE FROM product_categories_subcategories WHERE pdt_category_id =?", category_id)  
+
+    # Step 3: Delete from first parent table
+    db.execute("DELETE FROM product_categories WHERE id =?", category_id)    
+
+    # Step 4: Delete from second parent table
+    for id in subcategory_ids_list:
+        db.execute("DELETE FROM product_subcategories WHERE id = ?", id)
+
+    return redirect("/add_product_category") 
+
+#Route to delete entire product category
+@app.route("/delete_pdt_subcategory", methods=["POST"])  
+def delete_pdt_subcategory():
+    subcategory_id = request.form.get("subcategory_id")
+
+    #First delete value from referncing child table/s
+    db.execute("DELETE FROM product_categories_subcategories WHERE pdt_subcategory_id =?", subcategory_id)  
+
+    #Then delete from parent tables
+    db.execute("DELETE FROM product_subcategories WHERE id =?", subcategory_id)  
+
+    return redirect("/add_product_category") 
+
+
+
+
+
+
+
         
         
 #***********************************************************************************

@@ -49,6 +49,15 @@ body {
     }
 }
 
+.subcategory-div {
+    display: flex;
+    /*border: solid red;*/
+    
+    & div {
+        margin-right: 2em;
+    }
+}
+
 /* Purchase Order Page */
 
 .purchaseorder{
