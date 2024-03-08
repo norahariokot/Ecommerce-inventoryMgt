@@ -19,7 +19,7 @@
                             <!--<input type="text" name="category" id="category" class="addpdt-input">-->
                             <select name="category" class="category" id="categoryForm1" onchange="updateSubcategories()">
                                 <option disabled selected>Category</option>
-                                {% for category in category_dict %}
+                                {% for category in categories_subcategories_dict %}
                                     <option value="{{ category }}" class="addpdt-input" >{{ category }}</option>
                                 {% endfor %}
                             </select>
@@ -28,7 +28,7 @@
                             <label for="scategory" class="addpdt-lbl">Product Sub-category</label>
                                 <select name="scategory" id="subcategoryForm1" class="subcategory">
                                     <option disabled selected>subcategory</option>
-                                        {% for category, subcategories in category_dict.items() %}
+                                        {% for category, subcategories in categories_subcategories_dict.items() %}
                                             <option value="{{ subcategories }}" class="addpdt-input" >{{ subcategories}}</option>
                                         {% endfor %}
                                 </select>
@@ -86,16 +86,16 @@
                     <!--<input type="text" name="category" id="category" class="addpdt-input">-->
                     <select name="category" class="category" id="categoryForm2" onchange="updateSubcategories2()">
                         <option disabled selected>Category</option>
-                        {% for category in category_dict %}
+                        {% for category in categories_subcategories_dict %}
                             <option value="{{ category }}" class="addpdt-input" >{{ category }}</option>
                         {% endfor %}
                     </select>
                 </div>
                 <div class="grid-item-right">
                     <label for="subcategoryForm2" class="addpdt-lbl">Product Sub-category</label>
-                        <select name="scategory" id="subcategoryForm2" class="subcategory">
+                        <select name="subcategory" id="subcategoryForm2" class="subcategory">
                             <option disabled selected>subcategory</option>
-                                {% for category, subcategories in category_dict.items() %}
+                                {% for category, subcategories in categories_subcategories_dict.items() %}
                                     <option value="{{ subcategories }}" class="addpdt-input" >{{ subcategories}}</option>
                                 {% endfor %}
                         </select>

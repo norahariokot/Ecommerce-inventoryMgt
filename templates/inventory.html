@@ -178,7 +178,7 @@
         {% if delete_categories_subcategories %}
             <h2>Delete product category or product subcategory </h2>
             <h3>Delte product category</h3>
-            <p>This option will delete the entire product category including its subcategories</p>
+            <p><i class="fa-solid fa-circle-exclamation"></i>This option will delete the entire product category including its subcategories</p>
             <form action="/delete_pdt_category" method="POST" class="add-pdtcategory-form">
                 <input name="category_id" type="hidden" value = "{{ pdtcategory_id }}">
                 <input placeholder="Product Category" name="category" autofocus autocomplete="off" type="text" value="{{ pdtcategory }}">

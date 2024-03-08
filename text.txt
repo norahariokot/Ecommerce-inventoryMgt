@@ -172,4 +172,4 @@ SELECT pdt_category_id, pdt_category, pdt_subcategory_id, pdt_subcategory FROM p
                                 {% endif %}
 
 
-SELECT pdt_category_id, pdt_category, pdt_subcategory_id, pdt_subcategory FROM product_categories LEFT JOIN product_categories_subcategories ON product_categories.id = product_categories_subcategories.pdt_category_id LEFT JOIN product_subcategories ON product_subcategories.id = product_categories_subcategories.pdt_subcategory_id;
+SELECT pdt_category, pdt_subcategory FROM product_categories LEFT JOIN product_categories_subcategories ON product_categories.id = product_categories_subcategories.pdt_category_id LEFT JOIN product_subcategories ON product_subcategories.id = product_categories_subcategories.pdt_subcategory_id;

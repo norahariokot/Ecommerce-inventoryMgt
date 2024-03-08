@@ -212,13 +212,7 @@ def delete_pdt_subcategory():
 
     return redirect("/add_product_category") 
 
-
-
-
-
-
-
-        
+  
         
 #***********************************************************************************
 # *************************** PRODUCT lISTINGS *************************************
@@ -238,6 +232,7 @@ def products():
         category = item['category']  
         subcategory = item['subcategory']
         products_dict = {"id":id, "name":name, "brand": brand, "category":category, "subcategory": subcategory}
+        print(products_dict)
         products_list.append(products_dict)
 
         keys = list(products_list[0].keys())
@@ -256,26 +251,27 @@ def products():
 @app.route("/add_product", methods=['GET','POST'])  
 def add_product():
     # Retrieve categories from database for select menu in form
-    categories = db.execute("SELECT * FROM product_categories")
-    
-    category_dict = {} 
-    for dict_item in categories:   
-        category = dict_item['pdt_category']
-        if category in category_dict:
-            category_dict[category].append(dict_item['pdt_subcategory'])
-        else:
-            #category_dict[category] =  []
-            #category_dict[category].append(dict_item['pdt_subcategory'])
-            category_dict[category] = [dict_item['pdt_subcategory']]
+    categories_subcategories = db.execute("SELECT pdt_category, pdt_subcategory FROM product_categories LEFT JOIN product_categories_subcategories ON product_categories.id = product_categories_subcategories.pdt_category_id LEFT JOIN product_subcategories ON product_subcategories.id = product_categories_subcategories.pdt_subcategory_id;")
+    print(categories_subcategories)
 
-    json_category_dict = json.dumps(category_dict)     
+    categories_subcategories_dict ={}
+    for dict in categories_subcategories:
+        if dict["pdt_category"] in categories_subcategories_dict:
+            categories_subcategories_dict[dict["pdt_category"]].append(dict["pdt_subcategory"])
+        else:
+            categories_subcategories_dict[dict["pdt_category"]] =  [dict["pdt_subcategory"]]  
+            if categories_subcategories_dict[dict["pdt_category"]] == [None]:
+                categories_subcategories_dict[dict["pdt_category"]] = []      
+    print(categories_subcategories_dict)        
+    
+    json_categories_subcategories_dict = json.dumps(categories_subcategories_dict)     
 
     currencies = db.execute("SELECT * FROM currencies")
     currencies_list = [dict['name'] for dict in currencies]   
 
     if request.method == "GET":
         add_pdt = True       
-        return render_template("add-edit-product.html", add_pdt=add_pdt, category_dict=category_dict, json_category_dict=json_category_dict, currencies_list=currencies_list)
+        return render_template("add-edit-product.html", add_pdt=add_pdt, categories_subcategories_dict=categories_subcategories_dict, json_categories_subcategories_dict=json_categories_subcategories_dict, currencies_list=currencies_list)
         
     else:
         name = request.form.get("pdt_name")   
@@ -283,6 +279,8 @@ def add_product():
         brand = request.form.get("brand")
         category = request.form.get("category")
         scategory = request.form.get("scategory")
+        if scategory == None:
+            scategory = ""
         currency = request.form.get("currency")
         price = request.form.get("px")
         #image = request.form.get()
@@ -295,23 +293,22 @@ def add_product():
 def edit_product():
     id = request.form.get("id")
     
+    # Retrieve categories and subcategories from database for select menu in form
+    categories_subcategories = db.execute("SELECT pdt_category, pdt_subcategory FROM product_categories LEFT JOIN product_categories_subcategories ON product_categories.id = product_categories_subcategories.pdt_category_id LEFT JOIN product_subcategories ON product_subcategories.id = product_categories_subcategories.pdt_subcategory_id;")
+    print(categories_subcategories)
 
-    # Retrieve categories from database for select menu in form
-    categories = db.execute("SELECT * FROM product_categories")
-    
-    category_dict = {} 
-    for dict_item in categories:   
-        category = dict_item['pdt_category']
-        if category in category_dict:
-            category_dict[category].append(dict_item['pdt_subcategory'])
+    categories_subcategories_dict ={}
+    for dict in categories_subcategories:
+        if dict["pdt_category"] in categories_subcategories_dict:
+            categories_subcategories_dict[dict["pdt_category"]].append(dict["pdt_subcategory"])
         else:
-            #category_dict[category] =  []
-            #category_dict[category].append(dict_item['pdt_subcategory'])
-            category_dict[category] = [dict_item['pdt_subcategory']]
-    print(category_dict)        
-
-    json_category_dict = json.dumps(category_dict)     
-
+            categories_subcategories_dict[dict["pdt_category"]] =  [dict["pdt_subcategory"]]  
+            if categories_subcategories_dict[dict["pdt_category"]] == [None]:
+                categories_subcategories_dict[dict["pdt_category"]] = []      
+    print(categories_subcategories_dict)        
+    
+    json_categories_subcategories_dict = json.dumps(categories_subcategories_dict)    
+    
     currencies = db.execute("SELECT * FROM currencies")
     currencies_list = [dict['name'] for dict in currencies]   
     
@@ -326,7 +323,7 @@ def edit_product():
         subcategory = pdts_toedit[0]["subcategory"]
         currency= pdts_toedit[0]["currency"]
         price= pdts_toedit[0]["price"]
-    return render_template("add-edit-product.html", edit_pdt=edit_pdt, category_dict=category_dict,  json_category_dict=json_category_dict, currencies_list=currencies_list, id=id, name=name, specs=specs, brand=brand, category=category, subcategory=subcategory, currency=currency, price=price)  
+    return render_template("add-edit-product.html", edit_pdt=edit_pdt, categories_subcategories_dict=categories_subcategories_dict,  json_categories_subcategories_dict=json_categories_subcategories_dict, currencies_list=currencies_list, id=id, name=name, specs=specs, brand=brand, category=category, subcategory=subcategory, currency=currency, price=price)  
 
 # Route to update products
 @app.route("/update_product", methods=["POST"])
@@ -341,6 +338,10 @@ def update_product():
         brand = request.form.get("brand")
         category = request.form.get("category")
         subcategory = request.form.get("subcategory")
+        if subcategory == None:
+            subcategory =""
+        #print(subcategory)
+        #print(type(subcategory))
         currency = request.form.get("currency")
         price = request.form.get("price")
         db.execute("UPDATE products_list SET pdt_name = ?, specs = ?, brand = ?, category = ?, subcategory = ?, currency = ?, price = ? WHERE id = ?", name, specs, brand, category, subcategory, currency, price, id )
