@@ -32,8 +32,10 @@ CREATE TABLE products_list (
    CREATE TABLE supplier_product_categories ( 
     supplier_id INTEGER, 
     category_id INTEGER, 
-    FOREIGN KEY(supplier_id) REFERENCES suppliers_list(id), 
-    FOREIGN KEY(category_id) REFERENCES product_categories(id)
+    subcategory_id INTEGER,
+    FOREIGN KEY(supplier_id) REFERENCES suppliers_list(id) ON DELETE CASCADE ON UPDATE CASCADE, 
+    FOREIGN KEY(category_id) REFERENCES product_categories(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY(subcategory_id) REFERENCES product_subcategories(id) ON DELETE CASCADE ON UPDATE CASCADE
     ); 
 
 CREATE TABLE product_categories (
@@ -173,3 +175,137 @@ SELECT pdt_category_id, pdt_category, pdt_subcategory_id, pdt_subcategory FROM p
 
 
 SELECT pdt_category, pdt_subcategory FROM product_categories LEFT JOIN product_categories_subcategories ON product_categories.id = product_categories_subcategories.pdt_category_id LEFT JOIN product_subcategories ON product_subcategories.id = product_categories_subcategories.pdt_subcategory_id;
+
+<div class="supplier-categories">    
+                        <select name="supplier_pdt" id="supplier_pdt" class="addpdt-input">
+                            <option disabled selected>Select product category </option>
+                                {% for dict_item in supplier_product_category %}
+                                    <option value="{{ dict_item['pdt_category'] }}">{{ dict_item['pdt_category']  }}</option>
+                                {% endfor %}
+                        </select>
+                                       
+                    </div>
+
+<form action="/add_supplier" method="POST">
+    <div class="supplier-categories" id="supplier-pdtcategories">
+        <div class="grid-item-left">
+            <label for="category" class="addpdt-lbl">Product Category</label>
+            <select name="category" class="category" id="addsupplier-pdtcat-Form1" onchange="updateSubcategories_suppliers()">
+                <option disabled selected>Category</option>
+                {% for category in categories_subcategories_dict %}
+                    <option value="{{ category }}" class="addpdt-input" >{{ category }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="grid-item-right">
+            <label for="subcategory" class="addpdt-lbl">Product Sub-category</label>
+                <select name="subcategory" id="addsupplier-pdtsubcat-Form1" class="subcategory">
+                    <option disabled selected>subcategory</option>
+                        {% for category, subcategories in categories_subcategories_dict.items() %}
+                            <option value="{{ subcategories }}" class="addpdt-input" >{{ subcategories }}</option>
+                        {% endfor %}
+                </select>
+        </div>
+     </div>
+
+    <button type="button" id="addProductCategoryBtn"> Add product category</button><br>                    
+
+ document.addEventListener("DOMContentLoaded", function() {
+    console.log("adding categories in supplier area")
+    const addProductCategoryBtn = document.getElementById("addProductCategoryBtn");
+
+    addProductCategoryBtn.addEventListener("click", function(event) {
+        event.preventDefault(); // Prevent the default form submission behavior
+
+        // Clone the supplier-categories div
+        const supplierCategoriesDiv = document.querySelector(".supplier-categories");
+        const newSupplierCategoriesDiv = supplierCategoriesDiv.cloneNode(true);
+
+        console.log(newSupplierCategoriesDiv)
+
+         // Append the cloned div to its parent
+        supplierCategoriesDiv.parentNode.insertBefore(newSupplierCategoriesDiv,addProductCategoryBtn);
+
+        let clonedElement = newSupplierCategoriesDiv.querySelector('selector');
+        clonedElement.addEventListener('event', function);
+    });
+});
+   
+document.addEventListener("DOMContentLoaded", function() {
+    console.log("adding categories in supplier area")
+    const addProductCategoryBtn = document.getElementById("addProductCategoryBtn");
+
+    addProductCategoryBtn.addEventListener("click", function(event) {
+        event.preventDefault(); // Prevent the default form submission behavior
+
+        // Clone the supplier-categories div
+        const supplierCategoriesDiv = document.querySelector(".supplier-categories");
+        const newSupplierCategoriesDiv = supplierCategoriesDiv.cloneNode(true);
+
+        // Append the cloned div to its parent
+        supplierCategoriesDiv.parentNode.insertBefore(newSupplierCategoriesDiv,addProductCategoryBtn);
+
+        let clonedElement = newSupplierCategoriesDiv.querySelector(".add_supplier_category1");
+        clonedElement.addEventListener('change',updateSubcategories_suppliers );
+    });
+});
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    console.log("adding categories in supplier area")
+    const addProductCategoryBtn = document.getElementById("addProductCategoryBtn");
+
+    addProductCategoryBtn.addEventListener("click", function(event) {
+        event.preventDefault(); // Prevent the default form submission behavior
+
+        const supplierCategoriesDiv = document.querySelector(".supplier-categories");
+        const newSupplierCategoriesDiv = supplierCategoriesDiv.cloneNode(true);
+
+        supplierCategoriesDiv.parentNode.insertBefore(newSupplierCategoriesDiv,addProductCategoryBtn);
+
+        let clonedElement = newSupplierCategoriesDiv.querySelector(".add_supplier_category1");
+        clonedElement.addEventListener('change',updateSubcategories_suppliers );
+    });
+}); 
+
+<form action="/add_supplier" method="POST">           
+    <div class="supplier-categories" >
+        <div class="grid-item-left">
+            <label for="category" class="addpdt-lbl">Product Category</label>
+            <select name="category" class="add_supplier_category1"  onchange="updateSubcategories_suppliers()">
+                <option disabled selected>Category</option>
+                {% for category in categories_subcategories_dict %}
+                    <option value="{{ category }}" class="addpdt-input" >{{ category }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="grid-item-right">
+            <label for="subcategory" class="addpdt-lbl">Product Sub-category</label>
+                <select name="subcategory"  class="add_supplier_subcategory1">
+                    <option disabled selected>subcategory</option>
+                        {% for category, subcategories in categories_subcategories_dict.items() %}
+                            <option value="{{ subcategories }}" class="addpdt-input" >{{ subcategories }}</option>
+                        {% endfor %}
+                </select>
+        
+        </div>
+                
+    </div>
+ 
+    <button type="button" id="addProductCategoryBtn"> Add product category</button><br>
+                                        
+ function updateSubcategories_suppliers(event) {
+    let categorySelect_supplier1 = event.target;
+    let subcategorySelect_supplier1 = document.querySelector('.add_supplier_subcategory1');
+    subcategorySelect_supplier1.innerHTML = '<option value="" selected disabled>Select a subcategory</option>';
+    const selectedCategory_supplier1 = categorySelect_supplier1.value;
+    const subcategories = categoryDict[selectedCategory_supplier1];
+    if (subcategories) {
+        subcategories.forEach(subcategory => {
+            const option_supplier1 = document.createElement('option');
+            option_supplier1.value = subcategory;
+            option_supplier1.text = subcategory;
+            subcategorySelect_supplier1.add(option_supplier1);
+        });
+    }
+}                                       

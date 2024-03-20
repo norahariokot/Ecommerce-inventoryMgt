@@ -164,8 +164,10 @@ body {
     /*border: solid red;*/
 }
 
+
 .pdt-categories,
-.pdt-px {
+.pdt-px,
+.supplier-categories {
     width: 60%;
     display: grid;
     grid-template-columns: minmax(100%, 1fr);
@@ -210,7 +212,8 @@ body {
 
 /* Add product form*/
 .pdt-categories,
-.pdt-px {
+.pdt-px,
+.supplier-categories {
     grid-template-columns: repeat(2,minmax(45%, 1fr));
     grid-template-rows: auto;
     column-gap: 1em;

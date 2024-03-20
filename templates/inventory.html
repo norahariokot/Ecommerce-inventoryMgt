@@ -360,16 +360,31 @@
                     <label for="supplier_tel">Telephone Number</label>
                     <input type="tel" name="supplier_tel" id="supplier_tel" class="form-field" ><br>
                     <label for="supplier_name">Products supplied</label>
-                    <div class="supplier-categories">    
-                        <select name="supplier_pdt" id="supplier_pdt" class="addpdt-input">
-                            <option disabled selected>Select product category </option>
-                                {% for dict_item in supplier_product_category %}
-                                    <option value="{{ dict_item['pdt_category'] }}">{{ dict_item['pdt_category']  }}</option>
+                    <div class="supplier-categories" >
+                        <div class="grid-item-left">
+                            <label for="category" class="addpdt-lbl">Product Category</label>
+                            <select name="category" class="add_supplier_category1"  onchange="updateSubcategories_suppliers()">
+                                <option disabled selected>Category</option>
+                                {% for category in categories_subcategories_dict %}
+                                    <option value="{{ category }}" class="addpdt-input" >{{ category }}</option>
                                 {% endfor %}
-                        </select>
-                                       
+                            </select>
+                        </div>
+                        <div class="grid-item-right">
+                            <label for="subcategory" class="addpdt-lbl">Product Sub-category</label>
+                                <select name="subcategory"  class="add_supplier_subcategory1">
+                                    <option disabled selected>subcategory</option>
+                                        {% for category, subcategories in categories_subcategories_dict.items() %}
+                                            <option value="{{ subcategories }}" class="addpdt-input" >{{ subcategories }}</option>
+                                        {% endfor %}
+                                </select>
+                        
+                        </div>
+                                
                     </div>
-                    <button onclick="addSupplierCategory()"> Add product category</button><br>
+
+                    
+                    <button type="button" id="addProductCategoryBtn"> Add product category</button><br>
                                         
                     <button class="btn-nav-item" type="submit">Add supplier </button>
                     

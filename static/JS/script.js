@@ -1,6 +1,6 @@
 // Product categories section
 // Function to add a new input field for subcategory when creating product categories
-document.addEventListener("DOMContentLoaded", function() {
+/*document.addEventListener("DOMContentLoaded", function() {
     const addSubcategoryBtn = document.getElementById("addSubcategoryBtn");
     const subcategoryContainer = document.getElementById("subcategoryContainer");
   
@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 // Add products and update products forms sections  
-console.log(categoryDict);
+//console.log(categoryDict);
 
 // Function to update subcategories based on the selected category in Form 1
 function updateSubcategories() {
@@ -70,12 +70,56 @@ function updateSubcategories2() {
         option2.text = subcategory;
         subcategorySelect2.add(option2);
     });
-}  
+}  */
     
-     
-  
-  
-  
+//Suppliers list
+
+// Function to update subcategories based on the selected category in add supplier form-Form 1
+function updateSubcategories_suppliers(event) {
+    let categorySelect_supplier1 = event.target;
+    let subcategorySelect_supplier1 = categorySelect_supplier1.nextElementSibling;
+
+    // Clear existing subcategories
+    subcategorySelect_supplier1.innerHTML = '<option value="" selected disabled>Select a subcategory</option>';
+
+    // Get the selected category
+    const selectedCategory_supplier1 = categorySelect_supplier1.value;
+
+    // Access subcategories from the dictionary based on the selected category
+    const subcategories = categoryDict[selectedCategory_supplier1];
+
+    // Populate subcategories based on the selected category
+    if (subcategories) {
+        subcategories.forEach(subcategory => {
+            const option_supplier1 = document.createElement('option');
+            option_supplier1.value = subcategory;
+            option_supplier1.text = subcategory;
+            subcategorySelect_supplier1.add(option_supplier1);
+        });
+    }
+}
+
+// Function to clone input field for subcategory when creating product categories
+document.addEventListener("DOMContentLoaded", function() {
+    console.log("adding categories in supplier area")
+    const addProductCategoryBtn = document.getElementById("addProductCategoryBtn");
+
+    addProductCategoryBtn.addEventListener("click", function(event) {
+        event.preventDefault(); // Prevent the default form submission behavior
+
+        // Clone the supplier-categories div
+        const supplierCategoriesDiv = document.querySelector(".supplier-categories");
+        const newSupplierCategoriesDiv = supplierCategoriesDiv.cloneNode(true);
+
+        // Append the cloned div to its parent
+        supplierCategoriesDiv.parentNode.insertBefore(newSupplierCategoriesDiv,addProductCategoryBtn);
+
+        let clonedElement = newSupplierCategoriesDiv.querySelector(".add_supplier_category1");
+        clonedElement.onchange = updateSubcategories_suppliers;
+    });
+});
+
+
   // Function to add form fields to the purchase order form, its triggered by add(row) btn and its children
       let formInputs = document.querySelector('.form-inputs');
           let clonedNode = formInputs.cloneNode(true);document.addEventListener('DOMContentLoaded', function() {

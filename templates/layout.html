@@ -14,8 +14,8 @@
     <script src="../static/JS/script.js" ></script> 
     <script>
     let categoryDict = JSON.parse('{{ json_categories_subcategories_dict | safe }}');
-    console.log('{{ json_productslist | safe }}');
-    
+    console.log(categoryDict)
+       
     let productList = JSON.parse('{{ json_productslist | safe }}')
     console.log(productList)
 

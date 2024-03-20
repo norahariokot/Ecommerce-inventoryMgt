@@ -359,7 +359,120 @@ def delete_pdt():
         print("deleted")
     return redirect("/products")    
 
- 
+#*****************************************************************************************
+# **************************************** SUPPLIERS *************************************
+#----------------------------------------------------------------------------------------- 
+# Route to suppliers list form
+@app.route("/suppliers")
+def suppliers():
+    supplier_list = True
+
+    # Retrieve suppliers and supplier categories from database
+    #suppliername_categories = db.execute("SELECT suppliers_list.id,supplier_name, GROUP_CONCAT(pdt_category) AS pdt_categories FROM suppliers_list JOIN supplier_product_categories ON suppliers_list.id = supplier_product_categories.supplier_id JOIN product_categories ON supplier_product_categories.category_id = product_categories.id GROUP BY supplier_name")
+    #print(suppliername_categories)
+#
+    #for item in suppliername_categories:
+    #    categories = item["pdt_categories"]
+    #    print(categories)
+    #    print(type(categories))
+    #    categories_list = categories.split(",")
+    #    print(categories_list)
+    #    item["pdt_categories"] = categories_list
+    #print(suppliername_categories)
+
+    #supplier_category_dict = {}
+    #for dict_item in suppliername_categories:
+        #supplier_name = dict_item["supplier_name"]
+        #categories_supplied = dict_item["pdt_categories"]
+        #categories_supplied_list = categories_supplied.split(",")
+        #supplier_category_dict[supplier_name]= categories_supplied_list
+    #print(supplier_category_dict)    
+
+    return render_template("inventory.html", supplier_list=supplier_list)
+
+
+# Route to add supplier to suppliers data base
+@app.route("/add_supplier", methods=["GET", "POST"])   
+def add_supplier():
+    if request.method == "GET":
+        add_supplier_form = True
+
+        # To receive product categories from the product_categories table to select pdt categories on the form
+        supplier_product_categories = db.execute("SELECT pdt_category, pdt_subcategory FROM product_categories LEFT JOIN product_categories_subcategories ON product_categories.id = product_categories_subcategories.pdt_category_id LEFT JOIN product_subcategories ON product_subcategories.id = product_categories_subcategories.pdt_subcategory_id;")
+        print(supplier_product_categories)
+
+        categories_subcategories_dict ={}
+        for dict in supplier_product_categories:
+            if dict["pdt_category"] in categories_subcategories_dict:
+                categories_subcategories_dict[dict["pdt_category"]].append(dict["pdt_subcategory"])
+            else:
+                categories_subcategories_dict[dict["pdt_category"]] =  [dict["pdt_subcategory"]]  
+                if categories_subcategories_dict[dict["pdt_category"]] == [None]:
+                    categories_subcategories_dict[dict["pdt_category"]] = []      
+        print(categories_subcategories_dict)        
+    
+        json_categories_subcategories_dict = json.dumps(categories_subcategories_dict)  
+       
+
+        return render_template("inventory.html", add_supplier_form=add_supplier_form, categories_subcategories_dict=categories_subcategories_dict, json_categories_subcategories_dict=json_categories_subcategories_dict)
+
+    else:
+    
+        supplier_name = request.form.get("supplier_name")    
+        supplier_email = request.form.get("supplier_email") 
+        supplier_tel = request.form.get("supplier_tel")  
+        supplier_pdt_category = request.form.get("category") 
+        supplier_pdt_subcategory = request.form.get("subcategory")  
+        supplier_pdt_category_subcategory_dict = {supplier_pdt_category: supplier_pdt_subcategory} 
+        print(supplier_name + supplier_email + supplier_tel)
+        print(supplier_pdt_category)
+        print(supplier_pdt_subcategory)
+       
+        #
+        #db.execute("INSERT INTO suppliers_list(supplier_name, supplier_email, supplier_tel) VALUES (?,?,?)", supplier, supplier_email, supplier_tel)
+        #supplier_id = db.execute("SELECT last_insert_rowid() AS id")
+        #supplierid_value = supplier_id[0]["id"]
+        #print("Supplier id is", supplierid_value)
+#
+        #supplier_pdtcategories = db.execute("SELECT id, pdt_category FROM product_categories")
+#
+        #for supplier_category in supplier_pdt:
+        #    for dict_item in supplier_pdtcategories:
+        #        if supplier_category in dict_item.values():
+        #            category = supplier_category
+        #            print(category)
+        #            product_category_id = db.execute("SELECT id FROM product_categories WHERE pdt_category = ?", category)
+        #            pdt_categoryid_value = product_category_id[0]["id"]
+        #            print("Product id", pdt_categoryid_value)
+        #            db.execute("INSERT INTO supplier_product_categories(supplier_id, category_id) VALUES (?,?)",  supplierid_value, pdt_categoryid_value)
+#
+        #     
+        return redirect("/add_supplier")
+
+
+# Route to display the edit suppliers form
+@app.route("/edit_supplier", methods=["POST"])
+def edit_supplier():
+    update_supplier = True
+    edit_supplier_id = request.form.get("id")
+
+    supplier_info = db.execute("SELECT * FROM suppliers_list WHERE id = ?", edit_supplier_id)
+    print(supplier_info)
+    # To receive product categories from the product_categories table to select pdt categories on the form
+    supplier_pdt_category = db.execute("SELECT DISTINCT pdt_category FROM product_categories")
+    print(supplier_pdt_category)
+    return render_template("inventory.html", update_supplier=update_supplier, supplier_info=supplier_info, supplier_pdt_category=supplier_pdt_category)
+
+# Route to update the suppliers detials   
+#@app.route("/update_supplier", methods=["POST"]) 
+#def update_supplier():
+
+
+
+
+#*****************************************************************************************
+# **************************************** PURCHASE ORDERS *************************************
+#----------------------------------------------------------------------------------------- 
 
 @app.route("/purchases")    
 def purchases():
@@ -411,95 +524,6 @@ def get_info():
         info_list.append(info_dict)
           
     return jsonify(info_list)
-
-
-# Route to suppliers list form
-@app.route("/suppliers")
-def suppliers():
-    supplier_list = True
-
-    # Retrieve suppliers and supplier categories from database
-    suppliername_categories = db.execute("SELECT suppliers_list.id,supplier_name, GROUP_CONCAT(pdt_category) AS pdt_categories FROM suppliers_list JOIN supplier_product_categories ON suppliers_list.id = supplier_product_categories.supplier_id JOIN product_categories ON supplier_product_categories.category_id = product_categories.id GROUP BY supplier_name")
-    print(suppliername_categories)
-
-    for item in suppliername_categories:
-        categories = item["pdt_categories"]
-        print(categories)
-        print(type(categories))
-        categories_list = categories.split(",")
-        print(categories_list)
-        item["pdt_categories"] = categories_list
-    print(suppliername_categories)
-
-    #supplier_category_dict = {}
-    #for dict_item in suppliername_categories:
-        #supplier_name = dict_item["supplier_name"]
-        #categories_supplied = dict_item["pdt_categories"]
-        #categories_supplied_list = categories_supplied.split(",")
-        #supplier_category_dict[supplier_name]= categories_supplied_list
-    #print(supplier_category_dict)    
-
-    return render_template("inventory.html", supplier_list=supplier_list, suppliername_categories=suppliername_categories)
-
-
-# Route to add supplier to suppliers data base
-@app.route("/add_supplier", methods=["GET", "POST"])   
-def add_supplier():
-    if request.method == "GET":
-        add_supplier_form = True
-        # To receive product categories from the product_categories table to select pdt categories on the form
-        supplier_product_category = db.execute("SELECT DISTINCT pdt_category FROM product_categories")
-        print(supplier_product_category)
-
-        return render_template("inventory.html", add_supplier_form=add_supplier_form, supplier_product_category=supplier_product_category)
-
-    else:
-    
-        supplier = request.form.get("supplier_name")    
-        supplier_email = request.form.get("supplier_email") 
-        supplier_tel = request.form.get("supplier_tel")  
-        supplier_pdt = request.form.getlist("supplier_pdt")   
-        print(supplier + supplier_email + supplier_tel)
-        print(supplier_pdt)
-        
-        db.execute("INSERT INTO suppliers_list(supplier_name, supplier_email, supplier_tel) VALUES (?,?,?)", supplier, supplier_email, supplier_tel)
-        supplier_id = db.execute("SELECT last_insert_rowid() AS id")
-        supplierid_value = supplier_id[0]["id"]
-        print("Supplier id is", supplierid_value)
-
-        supplier_pdtcategories = db.execute("SELECT id, pdt_category FROM product_categories")
-
-        for supplier_category in supplier_pdt:
-            for dict_item in supplier_pdtcategories:
-                if supplier_category in dict_item.values():
-                    category = supplier_category
-                    print(category)
-                    product_category_id = db.execute("SELECT id FROM product_categories WHERE pdt_category = ?", category)
-                    pdt_categoryid_value = product_category_id[0]["id"]
-                    print("Product id", pdt_categoryid_value)
-                    db.execute("INSERT INTO supplier_product_categories(supplier_id, category_id) VALUES (?,?)",  supplierid_value, pdt_categoryid_value)
-
-             
-        return redirect("/add_supplier")
-
-
-# Route to display the edit suppliers form
-@app.route("/edit_supplier", methods=["POST"])
-def edit_supplier():
-    update_supplier = True
-    edit_supplier_id = request.form.get("id")
-
-    supplier_info = db.execute("SELECT * FROM suppliers_list WHERE id = ?", edit_supplier_id)
-    print(supplier_info)
-    # To receive product categories from the product_categories table to select pdt categories on the form
-    supplier_pdt_category = db.execute("SELECT DISTINCT pdt_category FROM product_categories")
-    print(supplier_pdt_category)
-    return render_template("inventory.html", update_supplier=update_supplier, supplier_info=supplier_info, supplier_pdt_category=supplier_pdt_category)
-
-# Route to update the suppliers detials   
-#@app.route("/update_supplier", methods=["POST"]) 
-#def update_supplier():
-
 
 
 
