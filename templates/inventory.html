@@ -363,7 +363,7 @@
                     <div class="supplier-categories" >
                         <div class="grid-item-left">
                             <label for="category" class="addpdt-lbl">Product Category</label>
-                            <select name="category" class="add_supplier_category1"  onchange="updateSubcategories_suppliers()">
+                            <select name="category" class="add_supplier_category1"  onchange="updateSubcategories_suppliers(event)">
                                 <option disabled selected>Category</option>
                                 {% for category in categories_subcategories_dict %}
                                     <option value="{{ category }}" class="addpdt-input" >{{ category }}</option>
@@ -373,7 +373,7 @@
                         <div class="grid-item-right">
                             <label for="subcategory" class="addpdt-lbl">Product Sub-category</label>
                                 <select name="subcategory"  class="add_supplier_subcategory1">
-                                    <option disabled selected>subcategory</option>
+                                    <option selected disabled>subcategory</option>
                                         {% for category, subcategories in categories_subcategories_dict.items() %}
                                             <option value="{{ subcategories }}" class="addpdt-input" >{{ subcategories }}</option>
                                         {% endfor %}

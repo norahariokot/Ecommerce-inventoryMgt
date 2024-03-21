@@ -76,8 +76,13 @@ function updateSubcategories2() {
 
 // Function to update subcategories based on the selected category in add supplier form-Form 1
 function updateSubcategories_suppliers(event) {
+    console.log("updating subcategories based on categories in supplier area")
     let categorySelect_supplier1 = event.target;
-    let subcategorySelect_supplier1 = categorySelect_supplier1.nextElementSibling;
+    console.log(categorySelect_supplier1)
+    let grandparentElement = categorySelect_supplier1.parentNode.parentNode;
+    let subcategorySelect_supplier1 = grandparentElement.querySelector('.add_supplier_subcategory1');
+    //let subcategorySelect_supplier1 = categorySelect_supplier1.nextElementSibling;
+    console.log(subcategorySelect_supplier1)
 
     // Clear existing subcategories
     subcategorySelect_supplier1.innerHTML = '<option value="" selected disabled>Select a subcategory</option>';
@@ -101,7 +106,7 @@ function updateSubcategories_suppliers(event) {
 
 // Function to clone input field for subcategory when creating product categories
 document.addEventListener("DOMContentLoaded", function() {
-    console.log("adding categories in supplier area")
+   
     const addProductCategoryBtn = document.getElementById("addProductCategoryBtn");
 
     addProductCategoryBtn.addEventListener("click", function(event) {

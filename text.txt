@@ -282,10 +282,8 @@ document.addEventListener("DOMContentLoaded", function() {
         <div class="grid-item-right">
             <label for="subcategory" class="addpdt-lbl">Product Sub-category</label>
                 <select name="subcategory"  class="add_supplier_subcategory1">
-                    <option disabled selected>subcategory</option>
-                        {% for category, subcategories in categories_subcategories_dict.items() %}
-                            <option value="{{ subcategories }}" class="addpdt-input" >{{ subcategories }}</option>
-                        {% endfor %}
+                    <option value="" selected disabled>subcategory</option>
+                        
                 </select>
         
         </div>
@@ -295,6 +293,7 @@ document.addEventListener("DOMContentLoaded", function() {
     <button type="button" id="addProductCategoryBtn"> Add product category</button><br>
                                         
  function updateSubcategories_suppliers(event) {
+    console.log("update subcategories")
     let categorySelect_supplier1 = event.target;
     let subcategorySelect_supplier1 = document.querySelector('.add_supplier_subcategory1');
     subcategorySelect_supplier1.innerHTML = '<option value="" selected disabled>Select a subcategory</option>';
@@ -308,4 +307,15 @@ document.addEventListener("DOMContentLoaded", function() {
             subcategorySelect_supplier1.add(option_supplier1);
         });
     }
-}                                       
+}   
+
+<div class="supplier-categories" >
+    <div class="grid-item-left">
+        <label for="category" class="addpdt-lbl">Product Category</label>
+        <select name="category" class="add_supplier_category1"  onchange="updateSubcategories_suppliers(event)"></select>
+    </div>
+    <div class="grid-item-right">
+        <label for="subcategory" class="addpdt-lbl">Product Sub-category</label>
+            <select name="subcategory"  class="add_supplier_subcategory1"></select> 
+    </div>            
+</div>
