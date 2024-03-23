@@ -397,7 +397,7 @@ def add_supplier():
     if request.method == "GET":
         add_supplier_form = True
 
-        # To receive product categories from the product_categories table to select pdt categories on the form
+        # To receive product categories and subcategories for selection on the add supplier form
         supplier_product_categories = db.execute("SELECT pdt_category, pdt_subcategory FROM product_categories LEFT JOIN product_categories_subcategories ON product_categories.id = product_categories_subcategories.pdt_category_id LEFT JOIN product_subcategories ON product_subcategories.id = product_categories_subcategories.pdt_subcategory_id;")
         print(supplier_product_categories)
 
@@ -408,11 +408,12 @@ def add_supplier():
             else:
                 categories_subcategories_dict[dict["pdt_category"]] =  [dict["pdt_subcategory"]]  
                 if categories_subcategories_dict[dict["pdt_category"]] == [None]:
-                    categories_subcategories_dict[dict["pdt_category"]] = []      
+                    categories_subcategories_dict[dict["pdt_category"]] = ["None"]      
         print(categories_subcategories_dict)        
     
         json_categories_subcategories_dict = json.dumps(categories_subcategories_dict)  
-       
+
+             
 
         return render_template("inventory.html", add_supplier_form=add_supplier_form, categories_subcategories_dict=categories_subcategories_dict, json_categories_subcategories_dict=json_categories_subcategories_dict)
 
@@ -421,18 +422,37 @@ def add_supplier():
         supplier_name = request.form.get("supplier_name")    
         supplier_email = request.form.get("supplier_email") 
         supplier_tel = request.form.get("supplier_tel")  
-        supplier_pdt_category = request.form.get("category") 
-        supplier_pdt_subcategory = request.form.get("subcategory")  
-        supplier_pdt_category_subcategory_dict = {supplier_pdt_category: supplier_pdt_subcategory} 
+        supplier_pdt_category = request.form.getlist("category") 
+        supplier_pdt_subcategory = request.form.getlist("subcategory") 
+       
+        #subcategories = [value for value in request.form.getlist("subcategory") if value] 
+        #supplier_pdt_category_subcategory_dict = {supplier_pdt_category: supplier_pdt_subcategory} 
+        # Initialize an empty dictionary
+        my_dict = {}
+
+       # Iterate over paired categories and subcategories
+        for category, subcategory in zip(supplier_pdt_category, supplier_pdt_subcategory):
+            # Check if the category already exists in the dictionary
+            if category in my_dict:
+                # If it does, append the new subcategory to the existing list
+                if type(my_dict[category]) is list:
+                    my_dict[category].append(subcategory)
+                else:
+                    my_dict[category] = [my_dict[category], subcategory]
+            else:
+                # If it doesn't, add the category and subcategory to the dictionary
+                my_dict[category] = subcategory
+                
+
         print(supplier_name + supplier_email + supplier_tel)
         print(supplier_pdt_category)
         print(supplier_pdt_subcategory)
-       
-        #
-        #db.execute("INSERT INTO suppliers_list(supplier_name, supplier_email, supplier_tel) VALUES (?,?,?)", supplier, supplier_email, supplier_tel)
-        #supplier_id = db.execute("SELECT last_insert_rowid() AS id")
-        #supplierid_value = supplier_id[0]["id"]
-        #print("Supplier id is", supplierid_value)
+        print(my_dict)
+    
+        db.execute("INSERT INTO suppliers_list(supplier_name, supplier_email, supplier_tel) VALUES (?,?,?)", supplier_name, supplier_email, supplier_tel)
+        supplier_id = db.execute("SELECT last_insert_rowid() AS id")
+        supplierid_value = supplier_id[0]["id"]
+        print("Supplier id is", supplierid_value)
 #
         #supplier_pdtcategories = db.execute("SELECT id, pdt_category FROM product_categories")
 #
@@ -446,7 +466,28 @@ def add_supplier():
         #            print("Product id", pdt_categoryid_value)
         #            db.execute("INSERT INTO supplier_product_categories(supplier_id, category_id) VALUES (?,?)",  supplierid_value, pdt_categoryid_value)
 #
-        #     
+        #  
+
+        for key, value in my_dict.items():
+            category = key
+            subcategory = value
+            print(f"{category}:{subcategory}")
+            category_id = db.execute("SELECT id FROM product_categories WHERE pdt_category = ?", category)
+            categoryid_value = category_id[0]["id"]
+            if subcategory != "None":
+                print(subcategory)
+                subcategory_id = db.execute("SELECT id FROM product_subcategories WHERE pdt_subcategory = ?", subcategory)
+                subcategoryid_value = subcategory_id[0]["id"]
+                db.execute("INSERT INTO supplier_product_categories(supplier_id, category_id, subcategory_id) VALUES (?,?,?)",  supplierid_value, categoryid_value, subcategoryid_value) 
+            else:
+                subcategoryid_value = ""  
+                db.execute("INSERT INTO supplier_product_categories(supplier_id, category_id) VALUES (?,?)",  supplierid_value, categoryid_value) 
+
+
+
+            print(categoryid_value)
+            print(subcategoryid_value)   
+
         return redirect("/add_supplier")
 
 

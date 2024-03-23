@@ -237,6 +237,14 @@
                 <h2>Create Purchase Order</h2>
                 <form action="/purchase_order" class="purchaseorder-form">
                     <div class="form-header">
+                        <h3>Purchase Order</h3>
+                        <label for=""></label>
+                        <select name="PO_currency" id="category2" onchange="updateSubcategories()">
+                            <option disabled selected>Select supplier</option>
+                            {% for currency in currencies_list %}
+                             <option value="{{ currency }}" class="addpdt-input" >{{ currency }}</option>   
+                            {% endfor %}                      
+                        </select>
                         <label for="PO_date">Date</label>
                         <input type="date" name="PO_date" id="PO_date" class="form-field">
                         <label for="PO_No">Purchase Order No.</label>
