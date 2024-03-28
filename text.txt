@@ -153,6 +153,12 @@ FROM product_categories
 LEFT JOIN product_categories_subcategories ON product_categories.id = product_categories_subcategories.pdt_category_id
 LEFT JOIN product_subcategories ON product_subcategories.id = product_categories_subcategories.pdt_subcategory_id;
 
+SELECT supplier_id, supplier_name, category_id, pdt_category, subcategory_id, pdt_subcategory
+FROM supplier_product_categories
+LEFT JOIN suppliers_list ON suppliers_list.id = supplier_product_categories.supplier_id
+LEFT JOIN product_categories ON product_categories.id = supplier_product_categories.category_id
+LEFT JOIN product_subcategories ON product_subcategories.id = supplier_product_categories.subcategory_id;
+
 SELECT pdt_category_id, pdt_category, pdt_subcategory_id, pdt_subcategory FROM product_categories LEFT JOIN product_categories_subcategories ON product_categories.id = product_categories_subcategories.pdt_category_id LEFT JOIN product_subcategories ON product_subcategories.id = product_categories_subcategories.pdt_subcategory_id;
 
  {% if loop.first %}
@@ -319,3 +325,23 @@ document.addEventListener("DOMContentLoaded", function() {
             <select name="subcategory"  class="add_supplier_subcategory1"></select> 
     </div>            
 </div>
+
+ <!-- 
+                                        {% if loop.first %} 
+                                        <td class="button-cell" rowspan="{{ supplier_dict['pdt_categories']|length}}">
+                                                <form action="/edit_supplier" method="post">
+                                                    <input name="id" type="hidden" value="{{ supplier_dict.id }}">
+                                                    <button type="submit" class="edit-button">Edit</button>
+                                                </form>
+                                        </td>
+                                    {% endif %} 
+                                    
+                                    {% if loop.first %}
+                                        <td class="button-cell" rowspan="{{ supplier_dict['pdt_categories']|length}}">
+                                                <form action="/delete_supplier" method="post">
+                                                    <input name="id" type="hidden" value="{{ supplier_dict.id }}">
+                                                    <button type="submit" class="edit-button">Delete</button>
+                                                </form>
+                                        </td>
+                                    {% endif %} 
+                               -->

@@ -308,43 +308,47 @@
                     <thead>
                         <tr>
                             <th>Supplier Name</th>
-                            <th>Products</th>
+                            <th>Products Category</th>
+                            <th>Products SubCategory</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tbody>
-                            {% for supplier_dict in suppliername_categories %}
-                                {% for pdt in supplier_dict['pdt_categories'] %}
-                                <tr>
+                            {% for supplier, products in my_dict.items() %}
+                                {% for product in products %}
+                                    <tr>
                                     {% if loop.first %}
-                                        <td rowspan="{{ supplier_dict['pdt_categories']|length }}"> {{ supplier_dict['supplier_name'] }}</td>
+                                        <td rowspan="{{ products|length }}">{{ supplier}}</td>
                                     {% endif %}                                  
-                                    <td> {{ pdt }} </td>
+                                    <td>{{ product['pdt_category'] }}</td>
+                                    <td>{{ product['pdt_subcategory'] }}</td>   
+                                    
+                                    {% if loop.first %} 
+                                    {% if "supplier_id" in product %}
+                                    <td class="button-cell" rowspan="{{ products|length}}">
+                                            <form action="/edit_supplier" method="post">
+                                                <input name="id" type="hidden" value="{{ product.supplier_id }}">
+                                                <button type="submit" class="edit-button">Edit</button>
+                                            </form>
+                                    </td>
+                                    {% endif %} 
+                                    {% endif %} 
 
                                     {% if loop.first %} 
-                                        <td class="button-cell" rowspan="{{ supplier_dict['pdt_categories']|length}}">
-                                                <form action="/edit_supplier" method="post">
-                                                    <input name="id" type="hidden" value="{{ supplier_dict.id }}">
-                                                    <button type="submit" class="edit-button">Edit</button>
-                                                </form>
-                                        </td>
+                                    {% if "supplier_id" in product %}
+                                    <td class="button-cell" rowspan="{{ products|length}}">
+                                            <form action="/delete_supplier" method="post">
+                                                <input name="id" type="hidden" value="{{ product.supplier_id }}">
+                                                <button type="submit" class="edit-button">Delete</button>
+                                            </form>
+                                    </td>
                                     {% endif %} 
-                                    
-                                    {% if loop.first %}
-                                        <td class="button-cell" rowspan="{{ supplier_dict['pdt_categories']|length}}">
-                                                <form action="/delete_supplier" method="post">
-                                                    <input name="id" type="hidden" value="{{ supplier_dict.id }}">
-                                                    <button type="submit" class="edit-button">Delete</button>
-                                                </form>
-                                        </td>
                                     {% endif %} 
-                               
-                                </tr>
 
+
+                                </tr>
                                 {% endfor %}
                             {% endfor%}
-
-                                
                     </tbody>
 
                  </table>

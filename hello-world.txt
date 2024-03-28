@@ -1,0 +1,6 @@
+Hello world!
+Today is a great day
+
+Line 3
+location=/mnt/c/Users/AriokotNorah/Downloads/Norah SoftwareDevelopment/Software developer/Harvard CS50/2023/Final Project
+

@@ -386,9 +386,25 @@ def suppliers():
         #categories_supplied = dict_item["pdt_categories"]
         #categories_supplied_list = categories_supplied.split(",")
         #supplier_category_dict[supplier_name]= categories_supplied_list
-    #print(supplier_category_dict)    
+    #print(supplier_category_dict) 
 
-    return render_template("inventory.html", supplier_list=supplier_list)
+    supplier_info = db.execute("SELECT supplier_id, supplier_name, category_id, pdt_category, subcategory_id, pdt_subcategory FROM supplier_product_categories LEFT JOIN suppliers_list ON suppliers_list.id = supplier_product_categories.supplier_id LEFT JOIN product_categories ON product_categories.id = supplier_product_categories.category_id LEFT JOIN product_subcategories ON product_subcategories.id = supplier_product_categories.subcategory_id")
+    print(supplier_info)  
+
+    my_dict = {}
+    for supplier in supplier_info:
+        if supplier["supplier_name"] in my_dict:
+            my_dict[supplier["supplier_name"]].append({"pdt_category": supplier["pdt_category"], "pdt_subcategory": supplier["pdt_subcategory"]})
+        else:
+            my_dict[supplier["supplier_name"]] = [{"supplier_id": supplier["supplier_id"], "pdt_category": supplier["pdt_category"], "pdt_subcategory": supplier["pdt_subcategory"]}]
+       
+    for supplier, supplier_info in my_dict.items():
+        print(f"{supplier}: {supplier_info}")
+
+
+
+
+    return render_template("inventory.html", supplier_list=supplier_list, my_dict=my_dict)
 
 
 # Route to add supplier to suppliers data base
@@ -412,6 +428,8 @@ def add_supplier():
         print(categories_subcategories_dict)        
     
         json_categories_subcategories_dict = json.dumps(categories_subcategories_dict)  
+
+        
 
              
 
@@ -465,25 +483,37 @@ def add_supplier():
         #            pdt_categoryid_value = product_category_id[0]["id"]
         #            print("Product id", pdt_categoryid_value)
         #            db.execute("INSERT INTO supplier_product_categories(supplier_id, category_id) VALUES (?,?)",  supplierid_value, pdt_categoryid_value)
-#
-        #  
 
         for key, value in my_dict.items():
             category = key
             subcategory = value
-            print(f"{category}:{subcategory}")
+            print(category)
+            print(subcategory)
             category_id = db.execute("SELECT id FROM product_categories WHERE pdt_category = ?", category)
             categoryid_value = category_id[0]["id"]
+            print(categoryid_value)
             if subcategory != "None":
                 print(subcategory)
-                subcategory_id = db.execute("SELECT id FROM product_subcategories WHERE pdt_subcategory = ?", subcategory)
-                subcategoryid_value = subcategory_id[0]["id"]
-                db.execute("INSERT INTO supplier_product_categories(supplier_id, category_id, subcategory_id) VALUES (?,?,?)",  supplierid_value, categoryid_value, subcategoryid_value) 
+                if type(subcategory) == list:
+                    print("Its a list")
+                    for item in subcategory:
+                        print(item)
+                        subcategory_id = db.execute("SELECT id FROM product_subcategories WHERE pdt_subcategory = ?", item)
+                        subcategoryid_value = subcategory_id[0]["id"]
+                        print(subcategoryid_value)
+                        db.execute("INSERT INTO supplier_product_categories(supplier_id, category_id, subcategory_id) VALUES (?,?,?)",  supplierid_value, categoryid_value, subcategoryid_value) 
+                        print("subcategory inserted")
+                else:
+                    print(subcategory)
+                    subcategory_id = db.execute("SELECT id FROM product_subcategories WHERE pdt_subcategory = ?", subcategory)
+                    subcategoryid_value = subcategory_id[0]["id"]
+                    print(subcategoryid_value)
+                    db.execute("INSERT INTO supplier_product_categories(supplier_id, category_id, subcategory_id) VALUES (?,?,?)",  supplierid_value, categoryid_value, subcategoryid_value) 
+                    print("subcategory inserted")
+
             else:
                 subcategoryid_value = ""  
                 db.execute("INSERT INTO supplier_product_categories(supplier_id, category_id) VALUES (?,?)",  supplierid_value, categoryid_value) 
-
-
 
             print(categoryid_value)
             print(subcategoryid_value)   
@@ -496,12 +526,13 @@ def add_supplier():
 def edit_supplier():
     update_supplier = True
     edit_supplier_id = request.form.get("id")
+    print(f"supplier_id {edit_supplier_id}")
 
     supplier_info = db.execute("SELECT * FROM suppliers_list WHERE id = ?", edit_supplier_id)
     print(supplier_info)
     # To receive product categories from the product_categories table to select pdt categories on the form
-    supplier_pdt_category = db.execute("SELECT DISTINCT pdt_category FROM product_categories")
-    print(supplier_pdt_category)
+    #supplier_pdt_category = db.execute("SELECT DISTINCT pdt_category FROM product_categories")
+    #print(supplier_pdt_category)
     return render_template("inventory.html", update_supplier=update_supplier, supplier_info=supplier_info, supplier_pdt_category=supplier_pdt_category)
 
 # Route to update the suppliers detials   
