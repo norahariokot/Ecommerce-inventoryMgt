@@ -600,6 +600,7 @@ body {
 
     .admin-dashboard-grid {
         grid-template-columns: minmax(.5em,1fr) minmax(20%,1fr) minmax(75%,1fr) minmax(.5em,1fr);
+        border: solid green;
     }
     
     .nav-section {
